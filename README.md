@@ -10,6 +10,8 @@ A friendly, step-by-step tutorial that demonstrates:
 This demo is meant to be read top to bottom like a guide: open `src/demo.py`
 alongside this README and follow along.
 
+The exact scenario this demo checks is specified in [spec/index.md](spec/index.md); the code and that spec must always agree.
+
 ## What this demo tests
 
 The script drives a real browser to the NHS Wales website and checks a few
