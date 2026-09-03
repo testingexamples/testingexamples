@@ -3,7 +3,7 @@
   "summary": "A beginner-friendly Playwright + Python demo that describes driving a real browser against the real, live Google Search website. Must never be run against live google.com in CI or automated tooling.",
   "description": "This demo describes using Playwright and Python to drive a real Chromium browser to https://www.google.com and run three real assertion-based checks: the home page title, the search results page title after searching \"testing examples\", and navigating away from google.com after clicking the first organic result. Written from documented knowledge of Google's well-known, stable accessible markup rather than live verification, because Google's Terms of Service restrict automated querying of Google Search.",
   "repository": "https://github.com/testingexamples/demo-playwright-python-for-google-search/",
-  "license": "GPL-2.0-or-later",
+  "license": "MIT OR Apache-2.0 OR GPL-2.0-only OR GPL-3.0-only OR BSD-3-Clause",
   "sections": [
     {
       "title": "Docs",
