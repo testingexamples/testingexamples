@@ -1,0 +1,29 @@
+{
+  "name": "demo-selenium-typescript-for-google-maps",
+  "summary": "A beginner-friendly, TypeScript, real-assertion demo describing Selenium WebDriver browser automation against the live Google Maps website.",
+  "description": "Describes driving a real Chrome browser to https://www.google.com/maps, checking the home page title contains 'Google Maps', searching for 'Cardiff Castle' and checking the resulting URL contains 'Cardiff', then clicking 'Zoom in' and checking the zoom level encoded in the URL (@lat,lng,zoomz) increased. Written and reviewed for correctness but deliberately never executed against the live site by this repo's own tooling, because Google's Terms of Service restrict automated querying of Google Maps.",
+  "repository": "https://github.com/testingexamples/demo-selenium-typescript-for-google-maps/",
+  "license": "GPL-2.0-or-later",
+  "sections": [
+    {
+      "title": "Docs",
+      "links": [
+        { "title": "README", "url": "README.md", "description": "Install and run instructions, and the Google Terms of Service caution." },
+        { "title": "Spec", "url": "spec/index.md", "description": "Exact scenario specification — the three assertions, selectors, and expected strings, including the URL-based zoom assertion." },
+        { "title": "Citation", "url": "CITATION.cff", "description": "Citation metadata for this software." }
+      ]
+    },
+    {
+      "title": "Source",
+      "links": [
+        { "title": "demo.ts", "url": "src/demo.ts", "description": "The demo script itself." }
+      ]
+    },
+    {
+      "title": "Optional",
+      "links": [
+        { "title": "AGENTS.md", "url": "AGENTS.md", "description": "Agent instructions pointer (loaded by CLAUDE.md), including the non-negotiable policy against live execution." }
+      ]
+    }
+  ]
+}
