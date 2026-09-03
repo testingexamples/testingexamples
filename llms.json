@@ -3,7 +3,7 @@
   "summary": "A beginner-friendly Playwright + Python demo that describes driving a real browser against the real, live Google Maps website, with canvas-aware, deliberately modest assertions. Must never be run against live google.com in CI or automated tooling.",
   "description": "This demo describes using Playwright and Python to drive a real Chromium browser to https://www.google.com/maps and run three real assertion-based checks: the page title, the URL after searching \"Cardiff Castle\", and the URL's embedded zoom-level number after clicking zoom in. Assertions are kept modest and honest because most of Google Maps renders to canvas/WebGL rather than to regular DOM elements. Written from documented knowledge of Google's well-known, stable accessible markup rather than live verification, because Google's Terms of Service restrict automated querying of its services.",
   "repository": "https://github.com/testingexamples/demo-playwright-python-for-google-maps/",
-  "license": "GPL-2.0-or-later",
+  "license": "MIT OR Apache-2.0 OR GPL-2.0-only OR GPL-3.0-only OR BSD-3-Clause",
   "sections": [
     {
       "title": "Docs",
