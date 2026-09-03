@@ -1,0 +1,17 @@
+{
+    "version": "0.2",
+    "ignorePaths": [],
+    "dictionaryDefinitions": [],
+    "dictionaries": [],
+    "words": [
+        "chromedriver",
+        "esmoduleinterop",
+        "xattr",
+        "aria",
+        "webgl",
+        "zoomz",
+        "google.com"
+    ],
+    "ignoreWords": [],
+    "import": []
+}
