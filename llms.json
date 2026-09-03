@@ -1,0 +1,54 @@
+{
+  "name": "demo-playwright-rust-for-nhs-wales",
+  "summary": "A beginner-friendly Playwright + Rust demo (using the playwright-rs crate) that drives a real browser against the real, live NHS Wales website.",
+  "description": "This demo drives a real Chromium browser to https://www.nhs.wales/ using Playwright (via the playwright-rs crate) and Rust, and runs three real assertion-based checks: the home page title, the About Us page title and headline, and the search results page. It is meant as a friendly, top-to-bottom walkthrough for learning Playwright browser automation against a live production site.",
+  "repository": "https://github.com/testingexamples/demo-playwright-rust-for-nhs-wales/",
+  "license": "GPL-2.0-or-later",
+  "sections": [
+    {
+      "title": "Docs",
+      "links": [
+        {
+          "title": "README",
+          "url": "README.md",
+          "description": "Install and run instructions, and a summary of what the demo tests."
+        },
+        {
+          "title": "Spec",
+          "url": "spec/index.md",
+          "description": "The exact three test scenarios, selector ids, and expected strings, as the single source of truth."
+        },
+        {
+          "title": "Citation",
+          "url": "CITATION.cff",
+          "description": "Citation metadata for this software."
+        }
+      ]
+    },
+    {
+      "title": "Source",
+      "links": [
+        {
+          "title": "main.rs",
+          "url": "src/main.rs",
+          "description": "The Playwright program that implements the three tests described in the spec."
+        }
+      ]
+    },
+    {
+      "title": "Optional",
+      "links": [
+        {
+          "title": "NHS Wales",
+          "url": "https://www.nhs.wales/",
+          "description": "The live website this demo tests against."
+        },
+        {
+          "title": "playwright-rs on crates.io",
+          "url": "https://crates.io/crates/playwright-rs",
+          "description": "The Rust crate this demo depends on."
+        }
+      ]
+    }
+  ]
+}

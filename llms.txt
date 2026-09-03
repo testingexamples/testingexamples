@@ -1,0 +1,21 @@
+# Demo Playwright Rust for NHS Wales
+
+> A beginner-friendly Playwright + Rust demo (using the `playwright-rs`
+> crate) that drives a real Chromium browser against the real, live NHS
+> Wales website (https://www.nhs.wales/) and runs three real
+> assertion-based checks.
+
+## Docs
+
+- [README](README.md): Install and run instructions, and a summary of what the demo tests.
+- [Spec](spec/index.md): The exact three test scenarios, selector ids, and expected strings, as the single source of truth.
+- [Citation](CITATION.cff): Citation metadata for this software.
+
+## Source
+
+- [main.rs](src/main.rs): The Playwright program that implements the three tests described in the spec.
+
+## Optional
+
+- [NHS Wales](https://www.nhs.wales/): The live website this demo tests against.
+- [playwright-rs on crates.io](https://crates.io/crates/playwright-rs): The Rust crate this demo depends on.
