@@ -13,13 +13,13 @@ In scope:
 - Playwright auto-waits on actionability; web-first assertions retry.
 - Contrasting a plain walkthrough with a real test: NUnit PageTest with Expect(...).
 - Common pitfalls specific to Playwright for .NET + C#.
-- Official documentation links.
+- Official documentation links, and a link to the sibling [demo-playwright-c-sharp](https://github.com/testingexamples/demo-playwright-c-sharp) repo.
 
 Out of scope:
 
 - Other language bindings of Playwright for .NET.
 - General C# language teaching unrelated to Playwright for .NET.
-- A runnable project — this repo is teaching material, not a demo. No `demo-*-playwright-c-sharp-skill` sibling repo exists yet, so SKILL.md must not link to one.
+- A runnable project — this repo is teaching material, not a demo. The runnable walkthrough is the sibling repo [demo-playwright-c-sharp](https://github.com/testingexamples/demo-playwright-c-sharp).
 - Automating Google Search or Google Maps for real, repeated use; the Terms-of-Service caveat is stated in SKILL.md.
 
 ## Principles and rules

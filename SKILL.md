@@ -138,6 +138,7 @@ Why this matters:
 
 ## Learn more
 
+- https://github.com/testingexamples/demo-playwright-c-sharp — the runnable locator-strategy walkthrough this skill's examples are drawn from, run against https://testingexamples.github.io.
 - https://playwright.dev/dotnet/docs/intro — official Playwright for .NET documentation.
 - https://playwright.dev/dotnet/docs/test-assertions — assertions reference.
 - https://playwright.dev/dotnet/docs/test-runners — NUnit/MSTest base classes and CLI options.
