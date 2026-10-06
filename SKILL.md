@@ -184,6 +184,7 @@ JUnit's `assertEquals(expected, actual)` takes **expected first** — swapping t
 
 ## Learn more
 
+- https://github.com/testingexamples/demo-selenium-java — the runnable locator-strategy walkthrough this skill's examples are drawn from, run against https://testingexamples.github.io.
 - https://www.selenium.dev/documentation/webdriver/ — official WebDriver documentation.
 - https://www.selenium.dev/selenium/docs/api/java/ — Java API reference.
 - https://testingexamples.github.io/ — the free, stable fixture page used above; safe to run repeatedly.

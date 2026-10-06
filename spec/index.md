@@ -13,13 +13,13 @@ In scope:
 - Selenium does not auto-wait; use WebDriverWait with ExpectedConditions, and never mix implicit with explicit waits.
 - Contrasting a plain walkthrough with a real test: JUnit 5 with assertEquals/assertTrue.
 - Common pitfalls specific to Selenium WebDriver + Java.
-- Official documentation links.
+- Official documentation links, and a link to the sibling [demo-selenium-java](https://github.com/testingexamples/demo-selenium-java) repo.
 
 Out of scope:
 
 - Other language bindings of Selenium WebDriver.
 - General Java language teaching unrelated to Selenium WebDriver.
-- A runnable project — this repo is teaching material, not a demo. No `demo-*-selenium-java-skill` sibling repo exists yet, so SKILL.md must not link to one.
+- A runnable project — this repo is teaching material, not a demo. The runnable walkthrough is the sibling repo [demo-selenium-java](https://github.com/testingexamples/demo-selenium-java).
 - Automating Google Search or Google Maps for real, repeated use; the Terms-of-Service caveat is stated in SKILL.md.
 
 ## Principles and rules
