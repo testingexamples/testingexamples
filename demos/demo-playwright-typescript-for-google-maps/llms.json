@@ -1,0 +1,54 @@
+{
+  "name": "demo-playwright-typescript-for-google-maps",
+  "summary": "A typed Playwright + TypeScript reference for Google Maps interaction patterns. Never executed against live google.com.",
+  "description": "This repo shows three typed Playwright TypeScript checks against Google Maps: page title contains 'Google Maps', a search via [aria-label=\"Search Google Maps\"] plus Enter whose resulting URL contains the query, and clicking [aria-label=\"Zoom in\"] increases the zoom level embedded in the URL's @lat,lng,zoomz fragment. Google's Terms of Service restrict automated querying, so this code is a reference only and must never be run against live google.com in CI or automated tooling.",
+  "repository": "https://github.com/testingexamples/demo-playwright-typescript-for-google-maps/",
+  "license": "MIT OR Apache-2.0 OR GPL-2.0-only OR GPL-3.0-only OR BSD-3-Clause",
+  "sections": [
+    {
+      "title": "Docs",
+      "links": [
+        {
+          "title": "README",
+          "url": "README.md",
+          "description": "Caution about Google's Terms of Service, and what this reference demonstrates."
+        },
+        {
+          "title": "Spec",
+          "url": "spec/index.md",
+          "description": "The exact three checks, selectors, and expected behavior, as the single source of truth."
+        },
+        {
+          "title": "Citation",
+          "url": "CITATION.cff",
+          "description": "Citation metadata for this software."
+        }
+      ]
+    },
+    {
+      "title": "Source",
+      "links": [
+        {
+          "title": "demo.ts",
+          "url": "src/demo.ts",
+          "description": "The typed Playwright reference code \u2014 never run against google.com."
+        }
+      ]
+    },
+    {
+      "title": "Optional",
+      "links": [
+        {
+          "title": "AGENTS.md",
+          "url": "AGENTS.md",
+          "description": "The non-negotiable policy against executing this code against live google.com."
+        },
+        {
+          "title": "testingexamples.github.io/examples/google-maps/",
+          "url": "https://testingexamples.github.io/examples/google-maps/",
+          "description": "The site-wide reference this repo mirrors."
+        }
+      ]
+    }
+  ]
+}
