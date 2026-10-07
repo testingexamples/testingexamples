@@ -1,0 +1,17 @@
+# Demo Playwright TypeScript
+
+> A beginner walkthrough demonstrating Playwright locator strategies and form interactions in TypeScript against https://testingexamples.github.io/en-001/practice/.
+
+## Docs
+
+- [README](README.md): Install and run instructions for the Playwright/TypeScript demo.
+- [Spec](spec/index.md): Exact scenario specification — target URL, every locator, and every form interaction value.
+- [Citation](CITATION.cff): Citation metadata for this software.
+
+## Source
+
+- [demo.ts](src/demo.ts): The walkthrough script itself.
+
+## Optional
+
+- [AGENTS.md](AGENTS.md): Agent instructions pointer (loaded by CLAUDE.md).
