@@ -15,5 +15,5 @@
 
 ## Optional
 
-- [Live site under test](https://testingexamples.github.io): The public page the demo automates.
+- [Live site under test](https://testingexamples.github.io/en-001/practice/): The public page the demo automates.
 - [selenium-c-sharp-skill](https://github.com/testingexamples/selenium-c-sharp-skill): The Claude Code skill that teaches this stack.

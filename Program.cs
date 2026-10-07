@@ -12,7 +12,7 @@ options.AddArgument("--disable-notifications"); // Disable notifications such as
 // `using` calls Dispose, which quits the browser even if an exception is thrown.
 using IWebDriver driver = new ChromeDriver(options);
 
-driver.Navigate().GoToUrl("https://testingexamples.github.io");
+driver.Navigate().GoToUrl("https://testingexamples.github.io/en-001/practice/");
 
 // Selenium does not auto-wait, so wait explicitly for the page content.
 var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));

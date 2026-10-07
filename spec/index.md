@@ -30,7 +30,7 @@ suite.
 
 ## Detail
 
-Target URL: `https://testingexamples.github.io`
+Target URL: `https://testingexamples.github.io/en-001/practice/`
 
 Locator strategies demonstrated, in order:
 
@@ -52,7 +52,7 @@ Form interactions performed, in order:
 ## Acceptance criteria
 
 - The program launches Chrome and navigates to
-  `https://testingexamples.github.io` without error.
+  `https://testingexamples.github.io/en-001/practice/` without error.
 - Each of the five locators above resolves to exactly one element on the
   live page (no timeout or "no such element" error).
 - The text input accepts the value `"hello"`, the checkbox and radio
@@ -67,5 +67,5 @@ Form interactions performed, in order:
 
 ## Sources
 
-- [https://testingexamples.github.io](https://testingexamples.github.io)
+- [https://testingexamples.github.io/en-001/practice/](https://testingexamples.github.io/en-001/practice/)
 - [selenium-c-sharp-skill](https://github.com/testingexamples/selenium-c-sharp-skill)

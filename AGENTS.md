@@ -1,7 +1,7 @@
 # AGENTS.md
 
 This repo is a small Selenium walkthrough demo, written in C#, that
-launches Chrome, navigates to https://testingexamples.github.io, and
+launches Chrome, navigates to https://testingexamples.github.io/en-001/practice/, and
 demonstrates five ways to locate elements plus four form interactions,
 printing what it finds at each step.
 
