@@ -21,7 +21,7 @@ third-party markup — it is **not** meant to be run repeatedly, or at all,
 against the live `google.com`. See [AGENTS.md](AGENTS.md) for the
 non-negotiable that follows from this. If you want a target you can safely
 run automation against as often as you like, point Playwright at
-[testingexamples.github.io](https://testingexamples.github.io) instead,
+[testingexamples.github.io](https://testingexamples.github.io/en-001/practice/) instead,
 which was built exactly for that: stable ids, names, classes, and text that
 don't shift under you.
 

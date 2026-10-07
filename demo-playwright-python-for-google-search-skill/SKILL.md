@@ -32,7 +32,7 @@ automated tooling — see `AGENTS.md` for the non-negotiable. Read
 
 1. Pick a real target site whose Terms of Service permit automated testing,
    or use a fixture/mock/site you control (such as
-   [testingexamples.github.io](https://testingexamples.github.io)).
+   [testingexamples.github.io](https://testingexamples.github.io/en-001/practice/)).
 2. Pick 2-4 small, real user actions (visit a page, use a search box, click
    a result) and write down the exact expected titles/text/selectors
    *before* writing code — that becomes your spec.
