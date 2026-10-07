@@ -51,7 +51,7 @@ Before `ClickAsync`, `FillAsync`, `CheckAsync`, etc., Playwright automatically w
 
 ## Full worked example
 
-A walkthrough against the free fixture page https://testingexamples.github.io (top-level statements, .NET 6+):
+A walkthrough against the free fixture page https://testingexamples.github.io/en-001/practice/ (top-level statements, .NET 6+):
 
 ```csharp
 using Microsoft.Playwright;
@@ -61,7 +61,7 @@ await using var browser = await playwright.Chromium.LaunchAsync(new() { Headless
 var context = await browser.NewContextAsync();
 var page = await context.NewPageAsync();
 
-await page.GotoAsync("https://testingexamples.github.io");
+await page.GotoAsync("https://testingexamples.github.io/en-001/practice/");
 
 // Locate by id, name, class, link text, and XPath.
 Console.WriteLine(await page.Locator("#id-example-1").EvaluateAsync<string>("el => el.outerHTML"));
@@ -103,7 +103,7 @@ public class FixtureTests : PageTest
     [SetUp]
     public async Task GoToFixturePage()
     {
-        await Page.GotoAsync("https://testingexamples.github.io");
+        await Page.GotoAsync("https://testingexamples.github.io/en-001/practice/");
     }
 
     [Test]
@@ -138,11 +138,11 @@ Why this matters:
 
 ## Learn more
 
-- https://github.com/testingexamples/demo-playwright-c-sharp — the runnable locator-strategy walkthrough this skill's examples are drawn from, run against https://testingexamples.github.io.
+- https://github.com/testingexamples/demo-playwright-c-sharp — the runnable locator-strategy walkthrough this skill's examples are drawn from, run against https://testingexamples.github.io/en-001/practice/.
 - https://playwright.dev/dotnet/docs/intro — official Playwright for .NET documentation.
 - https://playwright.dev/dotnet/docs/test-assertions — assertions reference.
 - https://playwright.dev/dotnet/docs/test-runners — NUnit/MSTest base classes and CLI options.
-- https://testingexamples.github.io/ — the free, stable fixture page used above; safe to run repeatedly.
+- https://testingexamples.github.io/en-001/practice/ — the free, stable fixture page used above; safe to run repeatedly.
 - Google Search and Google Maps restrict automated querying in their Terms of Service; do not point repeated automation at them.
 
 ---
