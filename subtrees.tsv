@@ -1,5 +1,11 @@
 demos/demo-playwright-c-sharp	demo-playwright-c-sharp
+demos/demo-playwright-c-sharp-for-google-maps	demo-playwright-c-sharp-for-google-maps
+demos/demo-playwright-c-sharp-for-google-search	demo-playwright-c-sharp-for-google-search
+demos/demo-playwright-c-sharp-for-nhs-wales	demo-playwright-c-sharp-for-nhs-wales
 demos/demo-playwright-java	demo-playwright-java
+demos/demo-playwright-java-for-google-maps	demo-playwright-java-for-google-maps
+demos/demo-playwright-java-for-google-search	demo-playwright-java-for-google-search
+demos/demo-playwright-java-for-nhs-wales	demo-playwright-java-for-nhs-wales
 demos/demo-playwright-javascript	demo-playwright-javascript
 demos/demo-playwright-javascript-for-google-maps	demo-playwright-javascript-for-google-maps
 demos/demo-playwright-javascript-for-google-search	demo-playwright-javascript-for-google-search
@@ -17,7 +23,13 @@ demos/demo-playwright-typescript-for-google-maps	demo-playwright-typescript-for-
 demos/demo-playwright-typescript-for-google-search	demo-playwright-typescript-for-google-search
 demos/demo-playwright-typescript-for-nhs-wales	demo-playwright-typescript-for-nhs-wales
 demos/demo-selenium-c-sharp	demo-selenium-c-sharp
+demos/demo-selenium-c-sharp-for-google-maps	demo-selenium-c-sharp-for-google-maps
+demos/demo-selenium-c-sharp-for-google-search	demo-selenium-c-sharp-for-google-search
+demos/demo-selenium-c-sharp-for-nhs-wales	demo-selenium-c-sharp-for-nhs-wales
 demos/demo-selenium-java	demo-selenium-java
+demos/demo-selenium-java-for-google-maps	demo-selenium-java-for-google-maps
+demos/demo-selenium-java-for-google-search	demo-selenium-java-for-google-search
+demos/demo-selenium-java-for-nhs-wales	demo-selenium-java-for-nhs-wales
 demos/demo-selenium-javascript	demo-selenium-javascript
 demos/demo-selenium-javascript-for-google-maps	demo-selenium-javascript-for-google-maps
 demos/demo-selenium-javascript-for-google-search	demo-selenium-javascript-for-google-search

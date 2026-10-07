@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>demo-playwright-c-sharp-for-google-maps</AssemblyName>
+    <RootNamespace>Demo</RootNamespace>
+    <Version>1.0.0</Version>
+    <Authors>Joel Parker Henderson</Authors>
+    <Description>Demo Playwright C# for Google Maps</Description>
+    <RepositoryUrl>https://github.com/testingexamples/demo-playwright-c-sharp-for-google-maps/</RepositoryUrl>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Playwright" Version="1.*" />
+  </ItemGroup>
+
+</Project>

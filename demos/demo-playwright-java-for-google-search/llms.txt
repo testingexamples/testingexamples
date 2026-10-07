@@ -1,0 +1,24 @@
+# Demo Playwright Java for Google Search
+
+> A beginner-friendly Playwright + Java demo that describes driving a real
+> Chromium browser against the real, live Google Search website
+> (https://www.google.com) and running three real assertion-based checks.
+> Google's Terms of Service restrict automated querying of Google Search, so
+> this repo's code must never be executed against live google.com in CI or
+> automated tooling — see AGENTS.md.
+
+## Docs
+
+- [README](README.md): Install instructions, the Google ToS caution, and a summary of what the demo tests.
+- [Spec](spec/index.md): The exact three test scenarios, selectors, and expected strings, as the single source of truth.
+- [Agent instructions](AGENTS.md): Source-of-truth pointer and the non-negotiable against live execution.
+- [Citation](CITATION.cff): Citation metadata for this software.
+
+## Source
+
+- [Demo.java](src/main/java/demo/Demo.java): The Playwright script that implements the three tests described in the spec.
+
+## Optional
+
+- [Google Search](https://www.google.com): The live website this demo describes testing against (do not automate against it).
+- [Live examples page](https://testingexamples.github.io/examples/google-search/): The testingexamples.github.io page documenting the same caution and interaction pattern.
