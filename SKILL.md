@@ -69,7 +69,7 @@ Selenium 4 takes a `java.time.Duration` (the old `long` seconds constructor is r
 
 ## Full worked example
 
-A walkthrough against the free fixture page https://testingexamples.github.io:
+A walkthrough against the free fixture page https://testingexamples.github.io/en-001/practice/:
 
 ```java
 import java.time.Duration;
@@ -90,7 +90,7 @@ public class Demo {
         WebDriver driver = new ChromeDriver(options);
 
         try {
-            driver.get("https://testingexamples.github.io");
+            driver.get("https://testingexamples.github.io/en-001/practice/");
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
             // Locate by id, waiting until visible.
@@ -148,7 +148,7 @@ class FixtureTest {
     @BeforeEach
     void setUp() {
         driver = new ChromeDriver();
-        driver.get("https://testingexamples.github.io");
+        driver.get("https://testingexamples.github.io/en-001/practice/");
     }
 
     @AfterEach
@@ -184,10 +184,10 @@ JUnit's `assertEquals(expected, actual)` takes **expected first** — swapping t
 
 ## Learn more
 
-- https://github.com/testingexamples/demo-selenium-java — the runnable locator-strategy walkthrough this skill's examples are drawn from, run against https://testingexamples.github.io.
+- https://github.com/testingexamples/demo-selenium-java — the runnable locator-strategy walkthrough this skill's examples are drawn from, run against https://testingexamples.github.io/en-001/practice/.
 - https://www.selenium.dev/documentation/webdriver/ — official WebDriver documentation.
 - https://www.selenium.dev/selenium/docs/api/java/ — Java API reference.
-- https://testingexamples.github.io/ — the free, stable fixture page used above; safe to run repeatedly.
+- https://testingexamples.github.io/en-001/practice/ — the free, stable fixture page used above; safe to run repeatedly.
 - Google Search and Google Maps restrict automated querying in their Terms of Service; do not point repeated automation at them.
 
 ---
