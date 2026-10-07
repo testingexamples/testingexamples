@@ -1,0 +1,19 @@
+{
+  "name": "selenium-c-sharp-skill",
+  "summary": "A Claude Code skill teaching how to write Selenium WebDriver browser automation code in C#.",
+  "description": "Teaches locating elements, performing actions, waiting, and writing real assertions in C# with Selenium WebDriver, using the free testingexamples.github.io fixture page as its worked example.",
+  "repository": "https://github.com/testingexamples/selenium-c-sharp-skill",
+  "license": "MIT OR Apache-2.0 OR GPL-2.0-only OR GPL-3.0-only OR BSD-3-Clause",
+  "sections": [
+    {
+      "title": "Docs",
+      "links": [
+        { "title": "README", "url": "README.md", "description": "What this repo is." },
+        { "title": "Skill", "url": "SKILL.md", "description": "The actual skill content." },
+        { "title": "Spec", "url": "spec/index.md", "description": "What this skill must accurately cover." },
+        { "title": "Agent instructions", "url": "AGENTS.md", "description": "Source-of-truth pointer for agents working on this repo." },
+        { "title": "Citation", "url": "CITATION.cff", "description": "How to cite this work." }
+      ]
+    }
+  ]
+}
