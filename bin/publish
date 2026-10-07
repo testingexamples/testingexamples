@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# Publish monorepo subdirectories to their standalone repos with git subtree.
+#
+# Usage: bin/publish [--dry-run] [<prefix-or-repo-name> ...]
+#
+# Reads subtrees.tsv (prefix<TAB>repo-name) and pushes each prefix's split
+# history to branch main of every host in HOSTS, under ORG/<repo-name>.
+# With no arguments, publishes every subtree. A host that rejects the push
+# (e.g. repo not created yet) is reported and skipped; the exit status is
+# non-zero if any push failed.
+set -uo pipefail
+
+ORG=${ORG:-testingexamples}
+HOSTS=${HOSTS:-"github.com gitlab.com codeberg.org"}
+BRANCH=${BRANCH:-main}
+
+cd "$(git rev-parse --show-toplevel)"
+
+dry=0
+if [ "${1:-}" = "--dry-run" ]; then dry=1; shift; fi
+
+failed=0
+while IFS=$'\t' read -r prefix repo; do
+  [ -z "$prefix" ] && continue
+  case "$prefix" in \#*) continue ;; esac
+  if [ $# -gt 0 ]; then
+    match=0
+    for want in "$@"; do
+      [ "$want" = "$prefix" ] || [ "$want" = "$repo" ] && match=1
+    done
+    [ $match -eq 1 ] || continue
+  fi
+
+  echo "== $prefix -> $ORG/$repo"
+  split=$(git subtree split --prefix="$prefix" 2>/dev/null) || { echo "   split failed"; failed=1; continue; }
+  for host in $HOSTS; do
+    url="git@${host}:${ORG}/${repo}.git"
+    if [ $dry -eq 1 ]; then
+      echo "   would push ${split:0:10} to $url $BRANCH"
+    elif git push "$url" "$split:refs/heads/$BRANCH" >/dev/null 2>&1; then
+      echo "   ok   $host"
+    else
+      echo "   FAIL $host"; failed=1
+    fi
+  done
+done < subtrees.tsv
+
+exit $failed
