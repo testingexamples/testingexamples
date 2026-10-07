@@ -17,7 +17,7 @@ This spec does NOT cover: how to install Python/Playwright/mypy or how to invoke
 
 ## Detail
 
-Target URL: `https://testingexamples.github.io`
+Target URL: `https://testingexamples.github.io/en-001/practice/`
 
 Locator strategies demonstrated, in order:
 
@@ -36,7 +36,7 @@ Form interactions performed, in order:
 
 ## Acceptance criteria
 
-- The script navigates to `https://testingexamples.github.io` without error.
+- The script navigates to `https://testingexamples.github.io/en-001/practice/` without error.
 - Each of the five locators above resolves to exactly one element on the live page (no timeout or strict-mode-violation error from Playwright).
 - The text input accepts the fill value `"hello"`, the checkbox and radio button end up checked, and the select ends up with the option at index 0 selected.
 - The script exits with status code 0 and no unhandled exception.
@@ -48,4 +48,4 @@ Form interactions performed, in order:
 
 ## Sources
 
-- [https://testingexamples.github.io](https://testingexamples.github.io)
+- [https://testingexamples.github.io/en-001/practice/](https://testingexamples.github.io/en-001/practice/)

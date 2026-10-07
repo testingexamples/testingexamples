@@ -46,7 +46,7 @@ def demo() -> None:
         
         try:
             # Navigate to a website
-            page.goto("https://testingexamples.github.io")
+            page.goto("https://testingexamples.github.io/en-001/practice/")
             
             ###
             # Find elements in various ways.
@@ -210,7 +210,7 @@ def demo_async() -> None:
     #         page = await context.new_page()
     #         
     #         try:
-    #             await page.goto("https://testingexamples.github.io")
+    #             await page.goto("https://testingexamples.github.io/en-001/practice/")
     #             # ... rest of the code with await prefixes
     #         finally:
     #             await browser.close()

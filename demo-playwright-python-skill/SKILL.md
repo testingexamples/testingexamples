@@ -5,7 +5,7 @@ description: Use when asked to run, explain, or extend the demo-playwright-pytho
 
 # Demo Playwright Python Skill
 
-This repo teaches five Playwright locator strategies and four form interactions against the public page https://testingexamples.github.io.
+This repo teaches five Playwright locator strategies and four form interactions against the public page https://testingexamples.github.io/en-001/practice/.
 
 Locator strategies: by id (`#id-example-1`), by name attribute (`[name="name-example-1"]`), by class (`.class-example-1`), by link text (`page.locator('a', has_text='Link Example 1')`), and by XPath (`xpath=//input[@type="submit"]`).
 

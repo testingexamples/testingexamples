@@ -15,4 +15,4 @@
 
 ## Optional
 
-- [Live site under test](https://testingexamples.github.io): The public page the demo automates.
+- [Live site under test](https://testingexamples.github.io/en-001/practice/): The public page the demo automates.

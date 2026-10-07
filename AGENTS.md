@@ -1,6 +1,6 @@
 # AGENTS.md
 
-This repo is a small Playwright walkthrough demo, written in Python, that launches Chromium, navigates to https://testingexamples.github.io, and demonstrates five ways to locate elements plus four form interactions, logging what it finds at each step.
+This repo is a small Playwright walkthrough demo, written in Python, that launches Chromium, navigates to https://testingexamples.github.io/en-001/practice/, and demonstrates five ways to locate elements plus four form interactions, logging what it finds at each step.
 
 `spec/index.md` is the single source of truth for the exact scenario this demo walks through: the target URL, every selector/locator used, and the expected values. If the code in `src/demo.py` and `spec/index.md` ever disagree, that is a defect in one of them — fix it before doing anything else.
 
