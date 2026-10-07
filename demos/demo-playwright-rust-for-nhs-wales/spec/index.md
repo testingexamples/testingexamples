@@ -37,7 +37,7 @@ program — see `README.md` for that.
 2. **About Us link test**
    * From the home page, click the link with exact accessible name: `About Us`
      (first matching link, exact match), found via
-     `page.get_by_role(AriaRole::Link, ...)` with `name("About Us")` and
+     `page.get_by_role(AriaRole::Menuitem, ...)` with `name("About Us")` and
      `exact(true)`
    * Wait for the resulting page to finish loading
    * Assert the resulting page title equals exactly: `About Us - NHS Wales`

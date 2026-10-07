@@ -24,7 +24,8 @@
 ///
 
 // Import Playwright types and functions.
-import { chromium, Browser, BrowserContext, Page, Locator } from 'playwright';
+import { chromium } from 'playwright';
+import type { Browser, BrowserContext, Page, Locator } from 'playwright';
 
 // Import strict assert, renamed for convenience as assert.
 // We use this to verify each step actually did what we expect.
@@ -59,7 +60,7 @@ async function demo(): Promise<void> {
         // page has the title and headline we expect.
         ///
 
-        await page.getByRole('link', { name: 'About Us', exact: true }).first().click();
+        await page.getByRole('menuitem', { name: 'About Us', exact: true }).first().click();
         await page.waitForLoadState('load');
 
         const aboutTitle: string = await page.title();

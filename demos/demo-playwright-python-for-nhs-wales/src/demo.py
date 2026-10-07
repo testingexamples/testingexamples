@@ -61,7 +61,7 @@ def demo() -> None:
             # page has the title and headline we expect.
             ###
 
-            page.get_by_role("link", name="About Us", exact=True).first.click()
+            page.get_by_role("menuitem", name="About Us", exact=True).first.click()
             page.wait_for_load_state("load")
 
             about_title = page.title()

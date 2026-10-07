@@ -55,7 +55,7 @@ async function demo() {
         // page has the title and headline we expect.
         ///
 
-        await page.getByRole('link', { name: 'About Us', exact: true }).first().click();
+        await page.getByRole('menuitem', { name: 'About Us', exact: true }).first().click();
         await page.waitForLoadState('load');
 
         const aboutTitle = await page.title();

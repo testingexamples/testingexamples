@@ -58,7 +58,7 @@ async fn run_demo(page: &Page) -> anyhow::Result<()> {
     // ---
 
     page.get_by_role(
-        AriaRole::Link,
+        AriaRole::Menuitem,
         Some(GetByRoleOptions::default().name("About Us").exact(true)),
     )
     .first()

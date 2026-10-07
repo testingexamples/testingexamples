@@ -20,7 +20,7 @@
 ///
 
 // Import Selenium WebDriver parts.
-import { Browser, Builder, By } from 'selenium-webdriver';
+import { Browser, Builder, By, until } from 'selenium-webdriver';
 
 // Import chromedriver options that you can set as you wish.
 import { Options } from 'selenium-webdriver/chrome.js';
@@ -62,6 +62,11 @@ async function demo() {
 
         await driver.findElement(By.linkText('About Us')).click();
 
+        // Selenium does not auto-wait for navigation the way Playwright
+        // does, so wait explicitly for the new page's title before reading
+        // it; without this, `getTitle()` can read the still-navigating page.
+        await driver.wait(until.titleIs('About Us - NHS Wales'), 10000);
+
         const aboutTitle = await driver.getTitle();
         console.log(`About Us page title: "${aboutTitle}"`);
         assert.equal(aboutTitle, 'About Us - NHS Wales');
@@ -82,7 +87,14 @@ async function demo() {
         await driver.findElement(By.id('navKeywords')).sendKeys('help');
         await driver.findElement(By.id('button-addon')).click();
 
-        const bodyText = await driver.findElement(By.css('body')).getText();
+        // Wait for the results page to finish navigating, then for its
+        // "Your search for ..." summary line, which renders slightly after
+        // the heading (a second client-side render pass).
+        await driver.wait(until.titleIs('Search results - NHS Wales'), 10000);
+        const bodyElement = await driver.findElement(By.css('body'));
+        await driver.wait(until.elementTextContains(bodyElement, 'Your search for'), 10000);
+
+        const bodyText = await bodyElement.getText();
         assert.ok(bodyText.includes('Search Results'), 'Expected page to contain "Search Results"');
         console.log('✅ Search results page contains "Search Results".');
         assert.ok(bodyText.includes('Your search for "help"'), 'Expected page to contain \'Your search for "help"\'');

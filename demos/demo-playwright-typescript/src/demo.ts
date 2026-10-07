@@ -16,7 +16,8 @@
 ///
 
 // Import Playwright types and functions
-import { chromium, Browser, BrowserContext, Page, Locator, ChromiumBrowser } from 'playwright';
+import { chromium } from 'playwright';
+import type { Browser, BrowserContext, Page, Locator, ChromiumBrowser } from 'playwright';
 
 // Import strict assert, renamed for convenience as assert
 import { strict as assert } from 'assert';
