@@ -1,0 +1,19 @@
+# Demo Playwright Java
+
+> A small Java walkthrough demo that uses Playwright to launch Chrome, navigate to testingexamples.github.io, and demonstrate locator strategies and form interactions.
+
+## Docs
+
+- [README](README.md): Install and run instructions.
+- [Spec](spec/index.md): The exact scenario this demo walks through - target URL, every locator, every form interaction.
+- [Agent instructions](AGENTS.md): Source-of-truth pointer and non-negotiables for agents working on this repo.
+- [Citation](CITATION.cff): How to cite this software.
+
+## Source
+
+- [Demo.java](src/main/java/demo/Demo.java): The Playwright walkthrough program itself.
+
+## Optional
+
+- [Live site under test](https://testingexamples.github.io/en-001/practice/): The public page the demo automates.
+- [playwright-java-skill](https://github.com/testingexamples/playwright-java-skill): The Claude Code skill that teaches this stack.
