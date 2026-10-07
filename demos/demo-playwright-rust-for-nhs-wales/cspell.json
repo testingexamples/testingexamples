@@ -1,0 +1,19 @@
+{
+    "version": "0.2",
+    "ignorePaths": [],
+    "dictionaryDefinitions": [],
+    "dictionaries": [],
+    "words": [
+        "addon",
+        "anyhow",
+        "chromium",
+        "navKeywords",
+        "padamson",
+        "playwright",
+        "rustc",
+        "rustup",
+        "tokio"
+    ],
+    "ignoreWords": [],
+    "import": []
+}
