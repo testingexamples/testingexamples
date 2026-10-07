@@ -1,0 +1,29 @@
+{
+  "name": "demo-playwright-javascript",
+  "version": "1.0.0",
+  "description": "Demo Playwright JavaScript",
+  "keywords": [
+    "demo",
+    "playwright",
+    "javascript",
+    "test"
+  ],
+  "homepage": "https://github.com/joelparkerhenderson/demo-playwright-javascript#readme",
+  "bugs": {
+    "url": "https://github.com/joelparkerhenderson/demo-playwright-javascript/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joelparkerhenderson/demo-playwright-javascript.git"
+  },
+  "license": "(MIT OR Apache-2.0 OR GPL-2.0-only OR GPL-3.0-only OR BSD-3-Clause)",
+  "author": "Joel Parker Henderson <joel@joelparkerhenderson.com>",
+  "type": "module",
+  "main": "src/demo.js",
+  "scripts": {
+    "test": "node src/demo.js"
+  },
+  "dependencies": {
+    "playwright": "^1.55.0"
+  }
+}
