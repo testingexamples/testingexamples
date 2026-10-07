@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="%sveltekit.assets%/assets/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script>
+      // Set data-theme on <html> before any stylesheet loads, so the one
+      // static theme link below (light.css) and this attribute agree from
+      // first paint. With 45 themes available (static/assets/themes/*.css,
+      // copied verbatim from the Lily Design System), preloading every
+      // theme the way a 2-theme site can isn't practical — so only the
+      // default is linked statically here; ThemePicker swaps a single
+      // managed <link> at runtime for every other choice (see its own
+      // "managed link" behavior and AGENTS.md's "Theming" section). A
+      // returning visitor who picked a non-default theme gets one brief
+      // flash of the default before their theme's stylesheet loads — a
+      // normal, accepted trade-off at this theme count. Wrapped in
+      // try/catch: a private window or disabled storage must still render
+      // a themed page, just always the default.
+      (function () {
+        var theme = 'light';
+        try {
+          theme = localStorage.getItem('testingexamples-theme') || 'light';
+        } catch (e) {}
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
+    <link rel="stylesheet" href="%sveltekit.assets%/assets/themes/light.css" />
+    <link rel="stylesheet" href="%sveltekit.assets%/assets/style.css" />
+    %sveltekit.head%
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents">%sveltekit.body%</div>
+  </body>
+</html>

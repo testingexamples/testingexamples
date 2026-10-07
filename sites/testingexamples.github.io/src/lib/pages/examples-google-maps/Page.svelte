@@ -1,0 +1,902 @@
+<script lang="ts">
+  import {
+    SectionHeading,
+    Separator,
+    InformationCallout,
+    CallToAction,
+    CodeBlock,
+    Details
+  } from 'lily-design-system-svelte-headless';
+  import { localeHref } from '#lib/i18n/paths.js';
+  import type { Locale } from '#lib/i18n/locales.js';
+
+  let { locale }: { locale: Locale } = $props();
+
+  // Code samples (including code comments) are never translated, in any
+  // locale — see spec/locales/index.md and src/lib/pages/given-when-then/Page.svelte.
+  type Messages = {
+    title: string;
+    metaDescription: string;
+    heading: string;
+    intro: string;
+    section1Heading: string;
+    calloutLabel: string;
+    calloutP1Pre: string;
+    tosLinkText: string;
+    calloutP1Mid: string;
+    patternsLabel: string;
+    calloutP1Post: string;
+    calloutP2A: string;
+    calloutP2B: string;
+    calloutP2C: string;
+    calloutP2D: string;
+    calloutP2E: string;
+    strongLessonLabel: string;
+    calloutP2F: string;
+    section2Heading: string;
+    section2Intro: string;
+    item1Strong: string;
+    item1Pre: string;
+    item1Post: string;
+    item2Strong: string;
+    item2A: string;
+    item2B: string;
+    item2C: string;
+    item2D: string;
+    item3Strong: string;
+    item3Rest: string;
+    item4Strong: string;
+    item4Rest: string;
+    item5Strong: string;
+    item5A: string;
+    item5B: string;
+    item5C: string;
+    item6Strong: string;
+    item6A: string;
+    item6B: string;
+    seleniumIntroA: string;
+    seleniumIntroB: string;
+    playwrightIntroA: string;
+    playwrightIntroB: string;
+    playwrightIntroC: string;
+    playwrightIntroD: string;
+    playwrightIntroE: string;
+    backToExamples: string;
+    googleSearchExamplesLinkText: string;
+  };
+
+  const EN_001: Messages = {
+    title: 'Google Maps Examples',
+    metaDescription:
+      'Six interactions with Google Maps — visit, search, click a result, scroll, zoom, and toggle a layer — implemented six ways: Selenium and Playwright, each in JavaScript, Python, and Rust.',
+    heading: 'Google Maps Examples',
+    intro:
+      'This page shows six interactions with Google Maps — visit, search, click a link or result, scroll, zoom, and toggle a layer — implemented six ways: two browser-automation tools (Selenium and Playwright) times three languages (JavaScript, Python, Rust).',
+    section1Heading: 'Two things to know before you start',
+    calloutLabel: 'Before you run any of this',
+    calloutP1Pre: "Google's ",
+    tosLinkText: 'Terms of Service',
+    calloutP1Mid: ' restrict automated querying of its services. The code below teaches ',
+    patternsLabel: 'patterns',
+    calloutP1Post:
+      ' — locator strategies and interaction techniques — not scripts meant to run repeatedly against the live Google Maps.',
+    calloutP2A:
+      'Google Maps is also a much harder automation target than a typical page. Most of the map itself renders to a ',
+    calloutP2B:
+      ' element (or WebGL), so you generally cannot "find" a street or a pin the way you find a paragraph of text — you interact with the ',
+    calloutP2C:
+      ' via coordinates and mouse events (click at an x/y position, scroll-wheel over the canvas element) rather than finding a DOM element for it. The UI chrome around the canvas — search box, zoom buttons, layers menu — is regular DOM, and usefully, Google gives most of that chrome real, relatively stable ',
+    calloutP2D: ' attributes for accessibility. That makes accessible-name locators (',
+    calloutP2E:
+      ') a much better choice than generated or hashed CSS class names, which change on every Maps deploy. This is the single most transferable lesson on this page: ',
+    strongLessonLabel:
+      "prefer accessible-name locators over class-name locators whenever a site's markup isn't a public API you control",
+    calloutP2F: ' — that is good practice everywhere, not just here.',
+    section2Heading: 'The six interactions',
+    section2Intro:
+      'Every example below implements the same six steps. They are defined once here rather than repeated in each code sample:',
+    item1Strong: 'Visit',
+    item1Pre: ' — navigate to ',
+    item1Post: '.',
+    item2Strong: 'Search',
+    item2A: ' — locate the search box (has ',
+    item2B:
+      ' in current Google Maps markup — note this may drift over time like any third-party site) and type a query, e.g. ',
+    item2C: ', then submit (Enter, or the search button, which typically has ',
+    item2D: ').',
+    item3Strong: 'Click a link/result',
+    item3Rest:
+      ' — click the first search result in the results panel (results are normally DOM list items, not canvas — findable by role or text even though the map itself is canvas).',
+    item4Strong: 'Scroll',
+    item4Rest:
+      " — simulate a scroll/pan over the map canvas: for tools with a real mouse-wheel/scroll API, dispatch a wheel event or scroll gesture over the canvas element's bounding box, not over the whole page.",
+    item5Strong: 'Zoom',
+    item5A: ' — click the zoom-in button (',
+    item5B: ') or zoom-out button (',
+    item5C:
+      ') — a much more reliable approach than trying to pinch or scroll-zoom the canvas programmatically, and worth calling out as the pragmatic choice.',
+    item6Strong: 'Activate a layer',
+    item6A: ' — open the Layers panel (button ',
+    item6B:
+      '), then choose a layer such as "Traffic" (typically a labelled option or button once the panel is open — described below as "the traffic layer toggle" without overclaiming an exact stable selector).',
+    seleniumIntroA:
+      'All three languages below use aria-label-based locators throughout, per the lesson above. The Rust example uses ',
+    seleniumIntroB:
+      ", the de facto Selenium/WebDriver client for Rust — there is no official one, and its name nods to selenium's atomic number, 34.",
+    playwrightIntroA:
+      'Playwright ships official bindings for JavaScript, Python, .NET, and Java. Rust is community-maintained: ',
+    playwrightIntroB: ' (actively developed by ',
+    playwrightIntroC: ', pre-1.0) is the example below. The older ',
+    playwrightIntroD: ' crate, published on crates.io as ',
+    playwrightIntroE: ', has been abandoned since 2022.',
+    backToExamples: 'Back to Examples',
+    googleSearchExamplesLinkText: 'Google Search Examples'
+  };
+
+  // No British/American/Oxford spelling divergence occurs in this page's
+  // vocabulary, so all four English locales share one copy. See
+  // spec/locales/index.md.
+  const CY: Messages = {
+    title: 'Enghreifftiau Mapiau Google',
+    metaDescription:
+      "Chwe rhyngweithiad â Mapiau Google — ymweld, chwilio, clicio canlyniad, sgrolio, chwyddo, a newid haen — wedi'u gweithredu mewn chwe ffordd: Selenium a Playwright, pob un yn JavaScript, Python, a Rust.",
+    heading: 'Enghreifftiau Mapiau Google',
+    intro:
+      "Mae'r dudalen hon yn dangos chwe rhyngweithiad â Mapiau Google — ymweld, chwilio, clicio dolen neu ganlyniad, sgrolio, chwyddo, a newid haen — wedi'u gweithredu mewn chwe ffordd: dau offeryn awtomatiaeth porwr (Selenium a Playwright) wedi'u lluosi â thair iaith (JavaScript, Python, Rust).",
+    section1Heading: "Dau beth i'w gwybod cyn i chi ddechrau",
+    calloutLabel: 'Cyn i chi redeg unrhyw beth o hyn',
+    calloutP1Pre: 'Mae ',
+    tosLinkText: 'Telerau Gwasanaeth',
+    calloutP1Mid: " Google yn cyfyngu ar ymholi awtomatig am ei wasanaethau. Mae'r cod isod yn dysgu ",
+    patternsLabel: 'patrymau',
+    calloutP1Post:
+      " — strategaethau lleoli a thechnegau rhyngweithio — nid sgriptiau i'w rhedeg dro ar ôl tro yn erbyn Mapiau Google byw.",
+    calloutP2A:
+      "Mae Mapiau Google hefyd yn darged awtomatiaeth llawer anoddach na thudalen nodweddiadol. Mae'r rhan fwyaf o'r map ei hun yn rendro i elfen ",
+    calloutP2B:
+      ' (neu WebGL), felly fel arfer ni allwch "ddod o hyd" i stryd neu bin fel y byddech yn dod o hyd i baragraff o destun — rydych yn rhyngweithio â\'r ',
+    calloutP2C:
+      " drwy gyfesurynnau a digwyddiadau llygoden (clicio ar safle x/y, olwyn sgrolio dros yr elfen canfas) yn hytrach na dod o hyd i elfen DOM ar ei chyfer. Mae gweddill y rhyngwyneb o amgylch y canfas — blwch chwilio, botymau chwyddo, dewislen haenau — yn DOM cyffredin, ac, yn ddefnyddiol, mae Google yn rhoi priodoleddau ",
+    calloutP2D:
+      " go iawn, cymharol sefydlog i'r rhan fwyaf o'r rhyngwyneb hwnnw ar gyfer hygyrchedd. Mae hynny'n gwneud lleolyddion enw-hygyrch (",
+    calloutP2E:
+      ") yn ddewis llawer gwell nag enwau dosbarth CSS a gynhyrchwyd neu a hashiwyd, sy'n newid ar bob fersiwn newydd o Maps. Dyma'r wers fwyaf trosglwyddadwy ar y dudalen hon: ",
+    strongLessonLabel:
+      "ffafriwch leolyddion enw-hygyrch dros leolyddion enw-dosbarth pryd bynnag nad yw marcio gwefan yn API cyhoeddus rydych chi'n ei reoli",
+    calloutP2F: " — mae hynny'n arfer da ym mhobman, nid dim ond yma.",
+    section2Heading: 'Y chwe rhyngweithiad',
+    section2Intro:
+      "Mae pob enghraifft isod yn gweithredu'r un chwe cham. Fe'u diffinnir unwaith yma yn hytrach na'u hailadrodd ym mhob sampl cod:",
+    item1Strong: 'Ymweld',
+    item1Pre: ' — llywiwch i ',
+    item1Post: '.',
+    item2Strong: 'Chwilio',
+    item2A: ' — lleolwch y blwch chwilio (mae ganddo ',
+    item2B:
+      " ym marcio presennol Mapiau Google — sylwer y gallai hyn newid yn raddol dros amser fel unrhyw wefan trydydd parti) a theipiwch ymholiad, e.e. ",
+    item2C: ", yna cyflwynwch (Enter, neu'r botwm chwilio, sydd fel arfer â ",
+    item2D: ').',
+    item3Strong: 'Clicio dolen/canlyniad',
+    item3Rest:
+      " — cliciwch ar y canlyniad chwilio cyntaf yn y panel canlyniadau (mae canlyniadau fel arfer yn eitemau rhestr DOM, nid canfas — y gellir dod o hyd iddynt yn ôl rôl neu destun er bod y map ei hun yn ganfas).",
+    item4Strong: 'Sgrolio',
+    item4Rest:
+      " — efelychwch sgrolio/panio dros ganfas y map: ar gyfer offer sydd ag API olwyn-llygoden/sgrolio go iawn, anfonwch ddigwyddiad olwyn neu ystum sgrolio dros flwch ffiniol elfen y canfas, nid dros y dudalen gyfan.",
+    item5Strong: 'Chwyddo',
+    item5A: ' — cliciwch y botwm chwyddo-i-mewn (',
+    item5B: ") neu'r botwm chwyddo-allan (",
+    item5C:
+      ") — dull llawer mwy dibynadwy na cheisio pinsio neu sgrolio-chwyddo'r canfas yn rhaglenedig, ac yn werth ei nodi fel y dewis pragmatig.",
+    item6Strong: 'Troi haen ymlaen',
+    item6A: ' — agorwch y panel Haenau (botwm ',
+    item6B:
+      '), yna dewiswch haen fel "Traffic" (fel arfer opsiwn neu fotwm wedi’i labelu unwaith y bydd y panel ar agor — a ddisgrifir isod fel "switsh yr haen draffig" heb honni gormod am ddewisydd union sefydlog).',
+    seleniumIntroA:
+      "Mae'r tair iaith isod i gyd yn defnyddio lleolyddion sy'n seiliedig ar aria-label, yn unol â'r wers uchod. Mae'r enghraifft Rust yn defnyddio ",
+    seleniumIntroB:
+      ", y cleient Selenium/WebDriver de facto ar gyfer Rust — does dim un swyddogol, ac mae ei enw'n cyfeirio at rif atomig selenium, 34.",
+    playwrightIntroA:
+      "Mae Playwright yn darparu rhwymiadau swyddogol ar gyfer JavaScript, Python, .NET, a Java. Cynhelir Rust gan y gymuned: ",
+    playwrightIntroB: " (wedi'i ddatblygu'n weithredol gan ",
+    playwrightIntroC: ", cyn-1.0) yw'r enghraifft isod. Mae'r crât hŷn ",
+    playwrightIntroD: ', a gyhoeddwyd ar crates.io fel ',
+    playwrightIntroE: ", wedi'i adael ers 2022.",
+    backToExamples: "Yn ôl i'r Enghreifftiau",
+    googleSearchExamplesLinkText: 'Enghreifftiau Chwilio Google'
+  };
+
+  const ZH: Messages = {
+    title: '谷歌地图示例',
+    metaDescription:
+      '与谷歌地图的六种交互——访问、搜索、点击结果、滚动、缩放，以及切换图层——用六种方式实现：Selenium 和 Playwright，各自使用 JavaScript、Python 和 Rust。',
+    heading: '谷歌地图示例',
+    intro:
+      '这个页面展示与谷歌地图的六种交互——访问、搜索、点击链接或结果、滚动、缩放，以及切换图层——用六种方式实现：两种浏览器自动化工具（Selenium 和 Playwright）乘以三种语言（JavaScript、Python、Rust）。',
+    section1Heading: '开始之前需要了解的两件事',
+    calloutLabel: '在运行这些代码之前',
+    calloutP1Pre: '谷歌的',
+    tosLinkText: '服务条款',
+    calloutP1Mid: '限制对其服务进行自动化查询。下面的代码讲解的是',
+    patternsLabel: '模式',
+    calloutP1Post: '——定位策略和交互技巧——而不是打算反复针对真实谷歌地图运行的脚本。',
+    calloutP2A: '谷歌地图也是一个比典型页面难得多的自动化目标。地图本身大部分渲染在一个',
+    calloutP2B:
+      '元素（或 WebGL）上，因此你通常无法像查找一段文字那样“找到”一条街道或一个图钉——你是通过坐标和鼠标事件（在某个 x/y 坐标上点击、在画布元素上滚动鼠标滚轮）与',
+    calloutP2C: '交互，而不是为它查找一个 DOM 元素。画布周围的 UI 外壳——搜索框、缩放按钮、图层菜单——则是普通的 DOM，而且很实用的是，谷歌为这套外壳中的大多数部分都提供了真实、相对稳定的',
+    calloutP2D: '属性以支持无障碍访问。这使得基于可访问名称的定位器（',
+    calloutP2E:
+      '）比生成或哈希化的 CSS 类名更好，因为后者在地图每次部署时都会改变。这是这个页面上最具通用性的一条经验：',
+    strongLessonLabel: '只要一个网站的标记不是你能控制的公共 API，就优先使用基于可访问名称的定位器，而不是基于类名的定位器',
+    calloutP2F: '——这是一个在任何地方都适用的良好实践，不仅限于这里。',
+    section2Heading: '六种交互',
+    section2Intro: '下面的每个示例都实现了同样的六个步骤。这里统一定义一次，而不是在每份代码示例中重复：',
+    item1Strong: '访问',
+    item1Pre: '——导航到',
+    item1Post: '。',
+    item2Strong: '搜索',
+    item2A: '——找到搜索框（在当前的谷歌地图标记中带有',
+    item2B: '——注意这一点可能会像任何第三方网站一样随时间漂移），并输入查询内容，例如',
+    item2C: '，然后提交（回车键，或搜索按钮，通常带有',
+    item2D: '）。',
+    item3Strong: '点击链接/结果',
+    item3Rest:
+      '——点击结果面板中的第一个搜索结果（结果通常是 DOM 列表项，而不是画布——即使地图本身是画布，也可以按角色或文字找到它们）。',
+    item4Strong: '滚动',
+    item4Rest:
+      '——在地图画布上模拟滚动/平移操作：对于拥有真实鼠标滚轮/滚动 API 的工具，向画布元素的边界框（而不是整个页面）派发一个滚轮事件或滚动手势。',
+    item5Strong: '缩放',
+    item5A: '——点击放大按钮（',
+    item5B: '）或缩小按钮（',
+    item5C: '）——这比试图以编程方式对画布进行双指缩放或滚轮缩放要可靠得多，值得作为务实的选择单独指出。',
+    item6Strong: '激活一个图层',
+    item6A: '——打开图层面板（按钮',
+    item6B:
+      '），然后选择一个图层，例如“Traffic”（面板打开后通常是一个带标签的选项或按钮——下文将其描述为“交通图层开关”，而不去过度声称一个确切、稳定的选择器）。',
+    seleniumIntroA: '按照上面的经验，下面所有三种语言都统一使用基于 aria-label 的定位器。Rust 示例使用',
+    seleniumIntroB: '，这是事实上的 Rust 版 Selenium/WebDriver 客户端——并没有官方版本，它的名字致敬了硒的原子序数 34。',
+    playwrightIntroA: 'Playwright 提供官方的 JavaScript、Python、.NET 和 Java 绑定。Rust 版由社区维护：',
+    playwrightIntroB: '（由',
+    playwrightIntroC: '积极开发，尚在 1.0 之前）是下面用到的示例。较旧的',
+    playwrightIntroD: ' crate，以',
+    playwrightIntroE: '发布在 crates.io 上，自 2022 年以来已被放弃维护。',
+    backToExamples: '返回示例',
+    googleSearchExamplesLinkText: '谷歌搜索示例'
+  };
+
+  const AR: Messages = {
+    title: 'أمثلة Google Maps',
+    metaDescription:
+      'ست تفاعلات مع Google Maps — الزيارة والبحث والنقر على نتيجة والتمرير والتكبير وتبديل طبقة — منفّذة بست طرق: Selenium وPlaywright، كل منهما بلغات JavaScript وPython وRust.',
+    heading: 'أمثلة Google Maps',
+    intro:
+      'تعرض هذه الصفحة ست تفاعلات مع Google Maps — الزيارة والبحث والنقر على رابط أو نتيجة والتمرير والتكبير وتبديل طبقة — منفّذة بست طرق: أداتان لأتمتة المتصفح (Selenium وPlaywright) × ثلاث لغات (JavaScript وPython وRust).',
+    section1Heading: 'أمران يجب معرفتهما قبل أن تبدأ',
+    calloutLabel: 'قبل أن تشغّل أيًّا من هذا',
+    calloutP1Pre: 'تقيّد ',
+    tosLinkText: 'شروط خدمة Google',
+    calloutP1Mid: ' الاستعلام الآلي عن خدماتها. يعلّمك الكود أدناه ',
+    patternsLabel: 'أنماطًا',
+    calloutP1Post:
+      ' — استراتيجيات تحديد العناصر وتقنيات التفاعل — لا سكربتات يُراد تشغيلها مرارًا على Google Maps الحي.',
+    calloutP2A:
+      'كما أن Google Maps هدف أتمتة أصعب بكثير من صفحة عادية. فمعظم الخريطة نفسها تُرسم على عنصر ',
+    calloutP2B:
+      ' (أو WebGL)، فلا يمكنك عمومًا «العثور» على شارع أو دبوس كما تعثر على فقرة نصية — بل تتفاعل مع عنصر ',
+    calloutP2C:
+      ' عبر الإحداثيات وأحداث الفأرة (النقر عند موضع x/y، وتدوير عجلة الفأرة فوق عنصر canvas) بدلًا من العثور على عنصر DOM له. أما واجهة المستخدم المحيطة بالـ canvas — مربع البحث وأزرار التكبير وقائمة الطبقات — فهي DOM عادي، ومن المفيد أن Google تمنح معظم هذه الواجهة سمات ',
+    calloutP2D: ' حقيقية ومستقرة نسبيًا لإتاحة الوصول. وهذا يجعل محدِّدات الاسم المتاح (',
+    calloutP2E:
+      ') خيارًا أفضل بكثير من أسماء فئات CSS المولَّدة أو المجزَّأة، التي تتغير مع كل نشر لـ Maps. وهذا هو الدرس الأكثر قابلية للنقل في هذه الصفحة: ',
+    strongLessonLabel:
+      'فضّل محدِّدات الاسم المتاح على محدِّدات أسماء الفئات كلما كانت علامات الموقع ليست واجهة برمجية عامة تتحكم فيها',
+    calloutP2F: ' — فهذه ممارسة جيدة في كل مكان، لا هنا فحسب.',
+    section2Heading: 'التفاعلات الست',
+    section2Intro:
+      'يطبّق كل مثال أدناه الخطوات الست نفسها. وقد عُرّفت مرة واحدة هنا بدلًا من تكرارها في كل نموذج كود:',
+    item1Strong: 'الزيارة',
+    item1Pre: ' — انتقل إلى ',
+    item1Post: '.',
+    item2Strong: 'البحث',
+    item2A: ' — حدّد مربع البحث (وفيه ',
+    item2B:
+      ' في علامات Google Maps الحالية — لاحظ أنها قد تتغير مع الزمن كأي موقع لطرف ثالث) واكتب استعلامًا، مثل ',
+    item2C: '، ثم أرسله (Enter، أو زر البحث الذي يحمل عادةً ',
+    item2D: ').',
+    item3Strong: 'النقر على رابط/نتيجة',
+    item3Rest:
+      ' — انقر على أول نتيجة بحث في لوحة النتائج (النتائج عادةً عناصر قائمة DOM لا canvas — يمكن العثور عليها بالدور أو بالنص حتى لو كانت الخريطة نفسها canvas).',
+    item4Strong: 'التمرير',
+    item4Rest:
+      ' — حاكِ التمرير أو التحريك فوق canvas الخريطة: للأدوات التي لها واجهة حقيقية لعجلة الفأرة أو التمرير، أرسل حدث عجلة أو إيماءة تمرير فوق المستطيل المحيط بعنصر canvas، لا فوق الصفحة كلها.',
+    item5Strong: 'التكبير',
+    item5A: ' — انقر زر التكبير (',
+    item5B: ') أو زر التصغير (',
+    item5C:
+      ') — وهو نهج أوثق بكثير من محاولة التكبير بالقرص أو بعجلة الفأرة برمجيًا على الـ canvas، ويستحق التنويه به بوصفه الخيار العملي.',
+    item6Strong: 'تفعيل طبقة',
+    item6A: ' — افتح لوحة الطبقات (الزر ',
+    item6B:
+      ')، ثم اختر طبقة مثل «Traffic» (وهي عادةً خيار أو زر مسمّى بعد فتح اللوحة — يُوصف أدناه بأنه «مبدّل طبقة حركة المرور» دون ادعاء محدِّد ثابت دقيق).',
+    seleniumIntroA:
+      'تستخدم اللغات الثلاث أدناه محدِّدات قائمة على aria-label في كل موضع، وفقًا للدرس أعلاه. ويستخدم مثال Rust ',
+    seleniumIntroB:
+      '، عميل Selenium/WebDriver المعتمد فعليًا في Rust — لا يوجد عميل رسمي، واسمها إيماءة إلى العدد الذري للسيلينيوم، 34.',
+    playwrightIntroA:
+      'تأتي Playwright بارتباطات رسمية لـ JavaScript وPython و.NET وJava. أما Rust فيصونه المجتمع: ',
+    playwrightIntroB: ' (تُطوَّر بنشاط على يد ',
+    playwrightIntroC: '، قبل الإصدار 1.0) هي المثال أدناه. أما حزمة ',
+    playwrightIntroD: ' الأقدم، المنشورة على crates.io باسم ',
+    playwrightIntroE: '، فقد هُجرت منذ عام 2022.',
+    backToExamples: 'العودة إلى الأمثلة',
+    googleSearchExamplesLinkText: 'أمثلة Google Search'
+  };
+
+  const KO: Messages = {
+    title: 'Google Maps 예제',
+    metaDescription:
+      'Google Maps와의 여섯 가지 상호작용 — 방문, 검색, 결과 클릭, 스크롤, 확대/축소, 레이어 전환 — 을 여섯 가지 방식으로 구현했습니다: Selenium과 Playwright를 각각 JavaScript, Python, Rust로 사용합니다.',
+    heading: 'Google Maps 예제',
+    intro:
+      '이 페이지는 Google Maps와의 여섯 가지 상호작용 — 방문, 검색, 링크나 결과 클릭, 스크롤, 확대/축소, 레이어 전환 — 을 여섯 가지 방식으로 구현해 보여 줍니다. 두 가지 브라우저 자동화 도구(Selenium과 Playwright) × 세 가지 언어(JavaScript, Python, Rust)입니다.',
+    section1Heading: '시작하기 전에 알아 둘 두 가지',
+    calloutLabel: '이 중 어느 것이든 실행하기 전에',
+    calloutP1Pre: 'Google의 ',
+    tosLinkText: '서비스 약관',
+    calloutP1Mid: '은 자사 서비스에 대한 자동화된 쿼리를 제한합니다. 아래 코드가 가르치는 것은 ',
+    patternsLabel: '패턴',
+    calloutP1Post:
+      ' — 로케이터 전략과 상호작용 기법 — 이며, 실제 Google Maps를 상대로 반복 실행하라는 스크립트가 아닙니다.',
+    calloutP2A:
+      '또한 Google Maps는 일반적인 페이지보다 훨씬 자동화하기 어려운 대상입니다. 지도 자체의 대부분은 ',
+    calloutP2B:
+      ' 요소(또는 WebGL)로 렌더링되므로, 텍스트 문단을 찾듯이 거리나 핀을 일반적으로 "찾을" 수는 없습니다. 대신 이 ',
+    calloutP2C:
+      ' 요소에 대해서는 DOM 요소를 찾는 것이 아니라 좌표와 마우스 이벤트(x/y 위치에서 클릭, canvas 요소 위에서 스크롤 휠)로 상호작용합니다. canvas를 둘러싼 UI 영역 — 검색창, 확대/축소 버튼, 레이어 메뉴 — 은 일반 DOM이며, 유용하게도 Google은 접근성을 위해 이 영역 대부분에 실제로 비교적 안정적인 ',
+    calloutP2D: ' 속성을 제공합니다. 그래서 접근 가능한 이름 로케이터(',
+    calloutP2E:
+      ')가 Maps가 배포될 때마다 바뀌는, 생성되거나 해시된 CSS 클래스 이름보다 훨씬 나은 선택입니다. 이것이 이 페이지에서 가장 널리 적용할 수 있는 교훈입니다: ',
+    strongLessonLabel:
+      '사이트의 마크업이 여러분이 제어하는 공개 API가 아닐 때는 언제나 클래스 이름 로케이터보다 접근 가능한 이름 로케이터를 선호하세요',
+    calloutP2F: ' — 이것은 여기서뿐만 아니라 어디서나 좋은 관행입니다.',
+    section2Heading: '여섯 가지 상호작용',
+    section2Intro:
+      '아래의 모든 예제는 같은 여섯 단계를 구현합니다. 각 코드 샘플에서 반복하는 대신 여기에 한 번만 정의합니다:',
+    item1Strong: '방문',
+    item1Pre: ' — 다음 주소로 이동합니다: ',
+    item1Post: '.',
+    item2Strong: '검색',
+    item2A: ' — 검색창을 찾습니다(현재 Google Maps 마크업에서는 ',
+    item2B:
+      '가 있습니다. 다른 제3자 사이트처럼 시간이 지나며 바뀔 수 있음에 유의하세요). 그리고 쿼리를 입력합니다. 예: ',
+    item2C: '. 그런 다음 제출합니다(Enter, 또는 보통 ',
+    item2D: '가 있는 검색 버튼).',
+    item3Strong: '링크/결과 클릭',
+    item3Rest:
+      ' — 결과 패널에서 첫 번째 검색 결과를 클릭합니다(결과는 보통 canvas가 아니라 DOM 목록 항목이므로, 지도 자체는 canvas이더라도 역할이나 텍스트로 찾을 수 있습니다).',
+    item4Strong: '스크롤',
+    item4Rest:
+      ' — 지도 canvas 위에서 스크롤/이동을 시뮬레이션합니다. 실제 마우스 휠/스크롤 API가 있는 도구에서는 페이지 전체가 아니라 canvas 요소의 경계 상자 위에서 휠 이벤트나 스크롤 제스처를 발생시킵니다.',
+    item5Strong: '확대/축소',
+    item5A: ' — 확대 버튼(',
+    item5B: ') 또는 축소 버튼(',
+    item5C:
+      ')을 클릭합니다. canvas를 프로그램으로 핀치하거나 스크롤 확대하려는 것보다 훨씬 신뢰할 수 있는 방식이며, 현실적인 선택으로 짚어 둘 만합니다.',
+    item6Strong: '레이어 활성화',
+    item6A: ' — 레이어 패널을 엽니다(버튼 ',
+    item6B:
+      '). 그런 다음 "Traffic" 같은 레이어를 선택합니다(패널이 열리면 보통 라벨이 붙은 옵션이나 버튼이며, 정확한 안정적 선택자를 과장하지 않기 위해 아래에서는 "교통 레이어 토글"이라고 설명합니다).',
+    seleniumIntroA:
+      '아래 세 가지 언어는 모두 위의 교훈에 따라 처음부터 끝까지 aria-label 기반 로케이터를 사용합니다. Rust 예제는 ',
+    seleniumIntroB:
+      '를 사용합니다. 이것은 Rust용 사실상의 Selenium/WebDriver 클라이언트로, 공식 클라이언트는 없으며 이름은 셀레늄의 원자 번호 34에서 따온 것입니다.',
+    playwrightIntroA:
+      'Playwright는 JavaScript, Python, .NET, Java에 대한 공식 바인딩을 제공합니다. Rust는 커뮤니티에서 유지관리합니다: ',
+    playwrightIntroB: '(',
+    playwrightIntroC: '에서 활발히 개발 중, 1.0 이전)는 아래의 예제입니다. 더 오래된 ',
+    playwrightIntroD: ' 크레이트는 crates.io에 ',
+    playwrightIntroE: '라는 이름으로 게시되었으며, 2022년 이후 방치되었습니다.',
+    backToExamples: '예제로 돌아가기',
+    googleSearchExamplesLinkText: 'Google Search 예제'
+  };
+
+  const FR: Messages = {
+    title: 'Exemples de Google Maps',
+    metaDescription:
+      "Six interactions avec Google Maps — visiter, rechercher, cliquer sur un résultat, faire défiler, zoomer et activer une couche — réalisées de six façons : Selenium et Playwright, chacun en JavaScript, Python et Rust.",
+    heading: 'Exemples de Google Maps',
+    intro:
+      "Cette page présente six interactions avec Google Maps — visiter, rechercher, cliquer sur un lien ou un résultat, faire défiler, zoomer et activer une couche — réalisées de six façons : deux outils d'automatisation de navigateur (Selenium et Playwright) fois trois langages (JavaScript, Python, Rust).",
+    section1Heading: 'Deux choses à savoir avant de commencer',
+    calloutLabel: "Avant d'exécuter quoi que ce soit",
+    calloutP1Pre: "Les ",
+    tosLinkText: "conditions d'utilisation",
+    calloutP1Mid: " de Google limitent les requêtes automatisées sur ses services. Le code ci-dessous enseigne des ",
+    patternsLabel: 'schémas',
+    calloutP1Post:
+      " — stratégies de localisation et techniques d'interaction — et non des scripts destinés à être exécutés à répétition sur le vrai Google Maps.",
+    calloutP2A:
+      "Google Maps est aussi une cible d'automatisation bien plus difficile qu'une page ordinaire. L'essentiel de la carte elle-même est rendu dans un élément ",
+    calloutP2B:
+      ' (ou en WebGL), si bien que l\'on ne peut généralement pas « trouver » une rue ou une épingle comme on trouve un paragraphe de texte — on interagit avec le ',
+    calloutP2C:
+      " par des coordonnées et des événements de souris (clic à une position x/y, molette au-dessus de l'élément canvas) au lieu de chercher un élément du DOM correspondant. L'interface autour du canvas — zone de recherche, boutons de zoom, menu des couches — est du DOM ordinaire et, utilement, Google attribue à la plupart de ces éléments de véritables attributs ",
+    calloutP2D: " relativement stables pour l'accessibilité. Cela fait des localisateurs par nom accessible (",
+    calloutP2E:
+      ") un bien meilleur choix que des noms de classes CSS générés ou hachés, qui changent à chaque déploiement de Maps. C'est la leçon la plus transposable de cette page : ",
+    strongLessonLabel:
+      "préférez les localisateurs par nom accessible aux localisateurs par nom de classe chaque fois que le balisage d'un site n'est pas une API publique que vous maîtrisez",
+    calloutP2F: " — c'est une bonne pratique partout, pas seulement ici.",
+    section2Heading: 'Les six interactions',
+    section2Intro:
+      "Chaque exemple ci-dessous met en œuvre les mêmes six étapes. Elles sont définies une seule fois ici plutôt que répétées dans chaque exemple de code :",
+    item1Strong: 'Visiter',
+    item1Pre: ' — naviguer vers ',
+    item1Post: '.',
+    item2Strong: 'Rechercher',
+    item2A: ' — localiser la zone de recherche (elle a ',
+    item2B:
+      " dans le balisage actuel de Google Maps — notez que cela peut évoluer avec le temps, comme pour tout site tiers) et saisir une requête, par exemple ",
+    item2C: ', puis valider (Entrée, ou le bouton de recherche, qui a généralement ',
+    item2D: ').',
+    item3Strong: 'Cliquer sur un lien / résultat',
+    item3Rest:
+      " — cliquer sur le premier résultat de recherche dans le panneau des résultats (les résultats sont normalement des éléments de liste du DOM, pas du canvas — repérables par rôle ou par texte même si la carte elle-même est un canvas).",
+    item4Strong: 'Faire défiler',
+    item4Rest:
+      " — simuler un défilement ou un déplacement sur le canvas de la carte : pour les outils disposant d'une vraie API de molette ou de défilement, envoyer un événement de molette ou un geste de défilement au-dessus de la boîte englobante de l'élément canvas, et non au-dessus de toute la page.",
+    item5Strong: 'Zoomer',
+    item5A: ' — cliquer sur le bouton de zoom avant (',
+    item5B: ') ou de zoom arrière (',
+    item5C:
+      ") — une approche bien plus fiable que d'essayer de zoomer au pincement ou à la molette par programmation, et qu'il faut souligner comme le choix pragmatique.",
+    item6Strong: 'Activer une couche',
+    item6A: ' — ouvrir le panneau des couches (bouton ',
+    item6B:
+      '), puis choisir une couche comme « Traffic » (généralement une option ou un bouton libellé une fois le panneau ouvert — décrit plus bas comme « la bascule de la couche de trafic », sans prétendre à un sélecteur stable exact).',
+    seleniumIntroA:
+      "Les trois langages ci-dessous utilisent tous des localisateurs basés sur aria-label, conformément à la leçon ci-dessus. L'exemple Rust utilise ",
+    seleniumIntroB:
+      ", le client Selenium/WebDriver de fait pour Rust — il n'y en a pas d'officiel, et son nom fait allusion au numéro atomique du sélénium, 34.",
+    playwrightIntroA:
+      "Playwright fournit des bindings officiels pour JavaScript, Python, .NET et Java. Rust est maintenu par la communauté : ",
+    playwrightIntroB: ' (activement développé par ',
+    playwrightIntroC: ", antérieur à la 1.0) est l'exemple ci-dessous. L'ancien crate ",
+    playwrightIntroD: ', publié sur crates.io sous le nom ',
+    playwrightIntroE: ", est abandonné depuis 2022.",
+    backToExamples: 'Retour aux exemples',
+    googleSearchExamplesLinkText: 'Exemples de Recherche Google'
+  };
+
+  const MESSAGES: Record<Locale, Messages> = {
+    'en-001': EN_001,
+    'en-gb': EN_001,
+    'en-gb-oxendict': EN_001,
+    'en-us': EN_001,
+    'cy-gb': CY,
+    'cy-001': CY,
+    'zh-cn': ZH,
+    'ar-001': AR,
+    'ko-001': KO,
+    'fr-001': FR
+  };
+
+  const m = $derived(MESSAGES[locale]);
+</script>
+
+<svelte:head>
+  <title>{m.title} — Testing Examples</title>
+  <meta name="description" content={m.metaDescription} />
+</svelte:head>
+
+<div class="page-header">
+  <h1>{m.heading}</h1>
+  <p>{m.intro}</p>
+</div>
+
+<section class="section prose">
+  <SectionHeading class="section-heading-start" heading={m.section1Heading} level={2} />
+
+  <InformationCallout label={m.calloutLabel}>
+    <p>
+      {m.calloutP1Pre}<a href="https://www.google.com/policies/terms/">{m.tosLinkText}</a
+      >{m.calloutP1Mid}<em>{m.patternsLabel}</em>{m.calloutP1Post}
+    </p>
+    <p>
+      {m.calloutP2A}<code>&lt;canvas&gt;</code>{m.calloutP2B}<em>canvas</em>{m.calloutP2C}<code
+        >aria-label</code
+      >{m.calloutP2D}<code>[aria-label="..."]</code>{m.calloutP2E}<strong>{m.strongLessonLabel}</strong
+      >{m.calloutP2F}
+    </p>
+  </InformationCallout>
+</section>
+
+<Separator label="Section break" />
+
+<section class="section prose">
+  <SectionHeading class="section-heading-start" heading={m.section2Heading} level={2} />
+
+  <p>{m.section2Intro}</p>
+
+  <ol>
+    <li>
+      <strong>{m.item1Strong}</strong>{m.item1Pre}<code>https://www.google.com/maps</code>{m.item1Post}
+    </li>
+    <li>
+      <strong>{m.item2Strong}</strong>{m.item2A}<code>aria-label="Search Google Maps"</code
+      >{m.item2B}<code>"Cardiff Castle"</code>{m.item2C}<code>aria-label="Search"</code>{m.item2D}
+    </li>
+    <li><strong>{m.item3Strong}</strong>{m.item3Rest}</li>
+    <li><strong>{m.item4Strong}</strong>{m.item4Rest}</li>
+    <li>
+      <strong>{m.item5Strong}</strong>{m.item5A}<code>aria-label="Zoom in"</code>{m.item5B}<code
+        >aria-label="Zoom out"</code
+      >{m.item5C}
+    </li>
+    <li>
+      <strong>{m.item6Strong}</strong>{m.item6A}<code>aria-label="Layers"</code>{m.item6B}
+    </li>
+  </ol>
+</section>
+
+<Separator label="Section break" />
+
+<section class="section prose">
+  <SectionHeading class="section-heading-start" heading="Selenium" level={2} />
+
+  <p>
+    {m.seleniumIntroA}<a href="https://crates.io/crates/thirtyfour"><code>thirtyfour</code></a
+    >{m.seleniumIntroB}
+  </p>
+
+  <Details summary="Selenium + JavaScript">
+    <CodeBlock label="selenium-webdriver, JavaScript">
+      <pre><code
+          >{`const { Builder, By, Key, until } = require('selenium-webdriver');
+
+(async function googleMapsWalkthrough() {
+  const driver = await new Builder().forBrowser('chrome').build();
+
+  try {
+    // 1. Visit
+    await driver.get('https://www.google.com/maps');
+
+    // 2. Search
+    const searchBox = await driver.findElement(By.css('[aria-label="Search Google Maps"]'));
+    await searchBox.sendKeys('Cardiff Castle', Key.RETURN);
+
+    // 3. Click the first result
+    const firstResult = await driver.wait(
+      until.elementLocated(By.css('[role="feed"] a')),
+      10000
+    );
+    await firstResult.click();
+
+    // 4. Scroll: dispatch a synthetic wheel event over the map canvas.
+    // (selenium-webdriver's newer driver.actions().scroll() API works
+    // too; this executeScript fallback is shown because it works across
+    // more selenium-webdriver versions.)
+    const canvas = await driver.findElement(By.css('canvas'));
+    await driver.executeScript((el) => {
+      const rect = el.getBoundingClientRect();
+      el.dispatchEvent(
+        new WheelEvent('wheel', {
+          deltaY: 200,
+          clientX: rect.x + rect.width / 2,
+          clientY: rect.y + rect.height / 2,
+          bubbles: true
+        })
+      );
+    }, canvas);
+
+    // 5. Zoom in
+    const zoomIn = await driver.findElement(By.css('[aria-label="Zoom in"]'));
+    await zoomIn.click();
+
+    // 6. Toggle the traffic layer
+    const layersButton = await driver.findElement(By.css('[aria-label="Layers"]'));
+    await layersButton.click();
+    const trafficOption = await driver.wait(
+      until.elementLocated(By.xpath("//*[contains(text(), 'Traffic')]")),
+      5000
+    );
+    await trafficOption.click();
+  } finally {
+    await driver.quit();
+  }
+})();
+`}</code
+        ></pre>
+    </CodeBlock>
+  </Details>
+
+  <Details summary="Selenium + Python">
+    <CodeBlock label="selenium, Python">
+      <pre><code
+          >{`from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+driver = webdriver.Chrome()
+
+try:
+    # 1. Visit
+    driver.get('https://www.google.com/maps')
+
+    # 2. Search
+    search_box = driver.find_element(By.CSS_SELECTOR, '[aria-label="Search Google Maps"]')
+    search_box.send_keys('Cardiff Castle')
+    search_box.send_keys(Keys.RETURN)
+
+    # 3. Click the first result
+    first_result = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, '[role="feed"] a'))
+    )
+    first_result.click()
+
+    # 4. Scroll: dispatch a synthetic wheel event over the map canvas,
+    # mirroring the JavaScript example's executeScript fallback above.
+    # (ActionChains.scroll_to_element / scroll_by_amount is a real
+    # alternative on recent selenium versions.)
+    canvas = driver.find_element(By.CSS_SELECTOR, 'canvas')
+    driver.execute_script(
+        """
+        const rect = arguments[0].getBoundingClientRect();
+        arguments[0].dispatchEvent(new WheelEvent('wheel', {
+            deltaY: 200,
+            clientX: rect.x + rect.width / 2,
+            clientY: rect.y + rect.height / 2,
+            bubbles: true
+        }));
+        """,
+        canvas
+    )
+
+    # 5. Zoom in
+    driver.find_element(By.CSS_SELECTOR, '[aria-label="Zoom in"]').click()
+
+    # 6. Toggle the traffic layer
+    driver.find_element(By.CSS_SELECTOR, '[aria-label="Layers"]').click()
+    traffic_option = WebDriverWait(driver, 5).until(
+        EC.presence_of_element_located((By.XPATH, "//*[contains(text(), 'Traffic')]"))
+    )
+    traffic_option.click()
+finally:
+    driver.quit()
+`}</code
+        ></pre>
+    </CodeBlock>
+  </Details>
+
+  <Details summary="Selenium + Rust">
+    <CodeBlock label="thirtyfour, Rust">
+      <pre><code
+          >{`use thirtyfour::prelude::*;
+
+#[tokio::main]
+async fn main() -> anyhow::Result<()> {
+    let caps = DesiredCapabilities::chrome();
+    let driver = WebDriver::new("http://localhost:9515", caps).await?;
+
+    // 1. Visit
+    driver.goto("https://www.google.com/maps").await?;
+
+    // 2. Search
+    let search_box = driver
+        .query(By::Css("[aria-label='Search Google Maps']"))
+        .desc("Maps search box")
+        .single()
+        .await?;
+    search_box.send_keys("Cardiff Castle\\u{E007}").await?;
+
+    // 3. Click the first result. Results are ordinary DOM list items, not
+    // canvas, so they are findable like any other element.
+    let first_result = driver
+        .query(By::Css("[role='feed'] a"))
+        .desc("first search result")
+        .single()
+        .await?;
+    first_result.click().await?;
+
+    // 4. Scroll: dispatch a synthetic wheel event over the map canvas.
+    // thirtyfour has no dedicated scroll gesture, so this mirrors the
+    // execute-script fallback used in the JavaScript and Python examples.
+    driver
+        .execute(
+            r#"const el = document.querySelector('canvas');
+               const rect = el.getBoundingClientRect();
+               el.dispatchEvent(new WheelEvent('wheel', {
+                   deltaY: 200,
+                   clientX: rect.x + rect.width / 2,
+                   clientY: rect.y + rect.height / 2,
+                   bubbles: true
+               }));"#,
+            Vec::new(),
+        )
+        .await?;
+
+    // 5. Zoom in
+    let zoom_in = driver
+        .query(By::Css("[aria-label='Zoom in']"))
+        .desc("Zoom in button")
+        .single()
+        .await?;
+    zoom_in.click().await?;
+
+    // 6. Toggle the traffic layer
+    let layers_button = driver
+        .query(By::Css("[aria-label='Layers']"))
+        .desc("Layers button")
+        .single()
+        .await?;
+    layers_button.click().await?;
+
+    let traffic_option = driver
+        .query(By::XPath("//*[contains(text(), 'Traffic')]"))
+        .desc("traffic layer toggle")
+        .single()
+        .await?;
+    traffic_option.click().await?;
+
+    driver.quit().await?;
+    Ok(())
+}
+`}</code
+        ></pre>
+    </CodeBlock>
+  </Details>
+</section>
+
+
+<Separator label="Section break" />
+
+<section class="section prose">
+  <SectionHeading
+    class="section-heading-start"
+    heading="Playwright"
+    level={2}
+  />
+
+  <p>
+    {m.playwrightIntroA}<a href="https://github.com/padamson/playwright-rust"><code>playwright-rs</code></a
+    >{m.playwrightIntroB}<code>padamson/playwright-rust</code>{m.playwrightIntroC}<code
+      >octaltree/playwright-rust</code
+    >{m.playwrightIntroD}<code>playwright</code>{m.playwrightIntroE}
+  </p>
+
+  <Details summary="Playwright + JavaScript">
+    <CodeBlock label="playwright, JavaScript">
+      <pre><code
+          >{`const { chromium } = require('playwright');
+
+(async () => {
+  const browser = await chromium.launch();
+  const page = await browser.newPage();
+
+  // 1. Visit
+  await page.goto('https://www.google.com/maps');
+
+  // 2. Search
+  await page.fill('[aria-label="Search Google Maps"]', 'Cardiff Castle');
+  await page.keyboard.press('Enter');
+
+  // 3. Click the first result
+  await page.locator('[role="feed"] a').first().click();
+
+  // 4. Scroll: Playwright has a real, clean API for this — hover the
+  // canvas, then dispatch a mouse-wheel gesture over it. Far more
+  // ergonomic than the executeScript-wheel-event fallback the other
+  // tools needed.
+  await page.hover('canvas');
+  await page.mouse.wheel(0, 200);
+
+  // 5. Zoom in
+  await page.click('[aria-label="Zoom in"]');
+
+  // 6. Toggle the traffic layer
+  await page.click('[aria-label="Layers"]');
+  await page.click('text=Traffic');
+
+  await browser.close();
+})();
+`}</code
+        ></pre>
+    </CodeBlock>
+  </Details>
+
+  <Details summary="Playwright + Python">
+    <CodeBlock label="playwright, Python">
+      <pre><code
+          >{`from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+    browser = p.chromium.launch()
+    page = browser.new_page()
+
+    # 1. Visit
+    page.goto('https://www.google.com/maps')
+
+    # 2. Search
+    page.fill('[aria-label="Search Google Maps"]', 'Cardiff Castle')
+    page.keyboard.press('Enter')
+
+    # 3. Click the first result
+    page.locator('[role="feed"] a').first.click()
+
+    # 4. Scroll: hover the canvas, then dispatch a mouse-wheel gesture —
+    # Playwright's real advantage here over the other tools' fallbacks.
+    page.hover('canvas')
+    page.mouse.wheel(0, 200)
+
+    # 5. Zoom in
+    page.click('[aria-label="Zoom in"]')
+
+    # 6. Toggle the traffic layer
+    page.click('[aria-label="Layers"]')
+    page.click('text=Traffic')
+
+    browser.close()
+`}</code
+        ></pre>
+    </CodeBlock>
+  </Details>
+
+  <Details summary="Playwright + Rust">
+    <CodeBlock label="playwright-rs, Rust">
+      <pre><code
+          >{`use playwright_rs::Playwright;
+
+#[tokio::main]
+async fn main() -> anyhow::Result<()> {
+    let pw = Playwright::launch().await?;
+    let browser = pw.chromium().launch().await?;
+    let page = browser.new_page().await?;
+
+    // 1. Visit
+    page.goto("https://www.google.com/maps", None).await?;
+
+    // 2. Search, then submit
+    let search_box = page.locator("[aria-label='Search Google Maps']");
+    search_box.fill("Cardiff Castle", None).await?;
+    search_box.press("Enter", None).await?;
+
+    // 3. Click the first result
+    let first_result = page.locator("[role='feed'] a");
+    first_result.click(None).await?;
+
+    // 4. Scroll: omitted here. playwright-rs is pre-1.0 and, unlike the
+    // JavaScript and Python bindings above, does not yet expose an
+    // ergonomic mouse-wheel API — see the JavaScript example for the
+    // pattern (hover the canvas, then page.mouse.wheel) this crate is
+    // expected to grow into.
+
+    // 5. Zoom in
+    let zoom_in = page.locator("[aria-label='Zoom in']");
+    zoom_in.click(None).await?;
+
+    // 6. Toggle the traffic layer
+    let layers_button = page.locator("[aria-label='Layers']");
+    layers_button.click(None).await?;
+    let traffic_option = page.locator("text=Traffic");
+    traffic_option.click(None).await?;
+
+    browser.close().await?;
+    Ok(())
+}
+`}</code
+        ></pre>
+    </CodeBlock>
+  </Details>
+</section>
+
+<Separator label="Section break" />
+
+<section class="section prose">
+  <p style="display: flex; gap: 1rem; flex-wrap: wrap;">
+    <CallToAction class="button button-primary" href={localeHref(locale, 'examples')}>{m.backToExamples}</CallToAction>
+    <CallToAction class="button button-secondary" href={localeHref(locale, 'examples-google-search')}
+      >{m.googleSearchExamplesLinkText}</CallToAction
+    >
+  </p>
+</section>

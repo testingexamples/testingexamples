@@ -1,0 +1,524 @@
+/* Testing Examples site stylesheet
+ *
+ * This site uses Lily Design System components (lily-design-system-svelte-
+ * headless and friends) AND Lily's own official themes — the 45 files
+ * under static/assets/themes/, copied verbatim from
+ * https://github.com/LilyDesignSystem/lily-design-system's themes/
+ * directory. Each of those files is a complete, self-contained stylesheet:
+ * it styles every one of Lily's ~492 components (including all the Lily
+ * components this site uses — SkipLink, ThemePicker, LocalePicker,
+ * TextSizePicker, SharePicker (composed together via PickerBar),
+ * SectionHeading, InformationCallout, CodeBlock, Details, SummaryList,
+ * Separator, CallToAction/Button, and Tag) by targeting the
+ * exact same stable class hooks those components render. So THIS file no
+ * longer styles any Lily component hook directly — that would just be a
+ * smaller, worse duplicate of what the linked theme file already does.
+ * This file now only holds:
+ *   1. A small alias layer (below) mapping this site's own custom-property
+ *      names to Lily's real semantic tokens (--lily-*, defined identically
+ *      in every theme file — see any file in static/assets/themes/ for the
+ *      canonical list and doc comments). Kept so the site-local rules
+ *      below didn't need a full rewrite when the theme system changed.
+ *   2. Site-local layout hooks (this site's own header/nav/footer/prose
+ *      structure, not Lily components) — prefixed `site-`.
+ *   3. The fixture section's plain, legible-only styling (see its own
+ *      comment near the end of this file).
+ *   4. One deliberate exception to point 1: a `.summary-list-item`
+ *      override. Lily's theme CSS lays `.summary-list` out as a 3-column
+ *      grid (term/value/action) and sets `.summary-list-item { display:
+ *      contents }` so each item's <dt>/<dd> become direct grid children —
+ *      but `SummaryListItem` (lily-design-system-svelte-headless) only
+ *      ever renders those two elements, never a 3rd "action" cell. With
+ *      `display: contents` flattening every item's 2 children into one
+ *      shared grid, auto-placement packs 3 cells per row regardless of
+ *      item boundaries, so every row after the first drifts by one
+ *      column — visible as description text landing in the wrong column
+ *      and wrapping one character per line. Confirmed by reading both the
+ *      component source and the theme CSS directly, not guessed. Fixed
+ *      below by overriding just this site's summary lists back to a
+ *      working 2-column layout; not a general Lily bug fix, since a
+ *      row *with* an action cell might behave differently.
+ *   5. A second deliberate exception: an `a.button` colour fix plus a
+ *      site-local `.button-secondary` modifier. Lily's `.button` hook sets
+ *      its primary-coloured fill and content colour through a
+ *      zero-specificity `:where(...)` selector (by design, so consumers
+ *      can override it) — but this file's own base `a { color: var(--accent) }`
+ *      rule (an ordinary element selector, non-zero specificity) beats
+ *      that `:where()` on any `CallToAction` rendered as `<a>` (i.e. given
+ *      an `href`), repainting the button's text the same colour as its own
+ *      background and making it unreadable. Confirmed via computed styles
+ *      in a real browser: `color` and `background-color` came back
+ *      byte-identical. Fixed below by pinning `a.button`'s colour back to
+ *      Lily's own content tokens at higher specificity. Separately, Lily
+ *      has no built-in "secondary/outlined" button variant, so this site's
+ *      two-tier CTA pattern (a filled primary action plus an outlined
+ *      secondary one, e.g. on the home page and `/checklist/`) still needs
+ *      its own `.button-secondary` modifier class — a genuine site-local
+ *      addition, not a duplicate of a Lily hook.
+ *   6. A third deliberate exception: `.share-picker-status` back to
+ *      visually-hidden. Lily's theme CSS deliberately keeps this element
+ *      in normal flow (`margin-block-start`, real font-size) so a "Link
+ *      copied" message is visible below the share button in most
+ *      contexts — a reasonable default. But in this site's compact header
+ *      icon-row, that extra in-flow element makes `.share-picker`'s own
+ *      box taller than `.theme-picker`'s/`.text-size-picker`'s (which have
+ *      no such element), and `.site-controls`'s `align-items: center`
+ *      then centers the taller box differently, visibly shifting the
+ *      share button up relative to its two neighbours — confirmed via
+ *      computed styles in a real browser: identical button height (40px)
+ *      on all three, but `.share-picker-button`'s `top` sat 8px above the
+ *      other two's shared `top`. The status is still announced to screen
+ *      readers via `aria-live` either way; only its visible placement
+ *      changes here. Fixed below by restoring it to the same
+ *      visually-hidden treatment this site used before the theme
+ *      migration.
+ *
+ * A note on a bug that WAS in the alias layer itself, not a Lily
+ * exception: the alias originally named its border-colour token `--border`
+ * — but every Lily theme file already defines a raw `--border` token of
+ * its own, meaning "border WIDTH" (`--border: 1px`), consumed across ~44
+ * places as `border: var(--border) solid transparent`. Because this file
+ * loads after the theme file, the alias's colour value silently replaced
+ * that width value everywhere on the page — not just in this file — and a
+ * `border` shorthand with an invalid <line-width> component (a colour
+ * string, here) is dropped by the browser entirely, so EVERY Lily button
+ * on the site (all three header pickers included) had a genuinely
+ * zero-width, invisible border the whole time; it wasn't noticed sooner
+ * because their background-colour fill still read as a "box" without one.
+ * Confirmed via computed styles (`border: 0px none …` on `.theme-picker-
+ * button` itself, not just this site's own CSS) before concluding it was
+ * a naming collision rather than a missing rule. Fixed by renaming the
+ * alias to `--border-color`, which cannot collide with any of Lily's raw
+ * tokens (`--radius-selector`, `--radius-field`, `--radius-box`,
+ * `--size-selector`, `--size-field`, `--border`, `--depth`, `--noise`) or
+ * its `--lily-*`/`--color-*` layers — checked against that full list, not
+ * just patched and hoped.
+ */
+
+:root {
+  /* Alias layer — see the file-header comment above. Lily's canonical
+   * names are on the right; every theme file under static/assets/themes/
+   * defines them identically, so this mapping holds across all 45. */
+  --page-bg: var(--lily-surface);
+  --card-bg: var(--lily-surface-alt);
+  --row-hover-bg: var(--lily-surface-alt);
+  --text: var(--lily-text);
+  --text-muted: var(--lily-text-muted);
+  --text-subtle: var(--lily-text-muted);
+  --border-color: var(--lily-border);
+  --border-strong: var(--lily-border-strong);
+  --accent: var(--color-primary);
+  --accent-hover: color-mix(in oklch, var(--color-primary) 82%, black);
+  --accent-tint: color-mix(in oklch, var(--color-primary) 14%, var(--lily-surface));
+  --accent2: var(--color-secondary);
+  --button-fill: var(--color-primary);
+  --button-fill-hover: color-mix(in oklch, var(--color-primary) 82%, black);
+  --radius: var(--lily-radius-md);
+  --radius-lg: var(--lily-radius-lg);
+  --shadow: var(--lily-shadow-sm);
+  --shadow-lg: var(--lily-shadow-lg);
+  --font-sans: var(--lily-font-body);
+  --font-mono: var(--lily-font-mono);
+  --content-max: 72rem;
+  --prose-max: 44rem;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html[data-text-size="smallest"] { font-size: 62.5%; }  /* 10px at a 16px default */
+html[data-text-size="smaller"]  { font-size: 75%; }    /* 12px */
+html[data-text-size="small"]    { font-size: 87.5%; }  /* 14px */
+html[data-text-size="normal"]   { font-size: 100%; }   /* 16px — same as no attribute */
+html[data-text-size="large"]    { font-size: 112.5%; } /* 18px */
+html[data-text-size="larger"]   { font-size: 125%; }   /* 20px */
+html[data-text-size="largest"]  { font-size: 137.5%; } /* 22px */
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--text);
+  background: var(--page-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+a:hover { color: var(--accent-hover); }
+a:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Exception 5 (see file-header comment) — restore Lily's own `.button`
+ * content colour on an <a>, since the plain `a` rule above otherwise wins
+ * on specificity over Lily's zero-specificity `:where(.button, …)` hook.
+ * Scoped to the exact modifier classes this site uses (`.button-primary`,
+ * `.button-secondary` — always rendered as <a>, never <button>, per every
+ * `CallToAction` usage in src/routes/) so the two variants can't clobber
+ * each other's colours. */
+a.button-primary,
+a.button-primary:visited {
+  color: var(--color-primary-content);
+}
+a.button-primary:hover {
+  color: var(--color-secondary-content);
+}
+
+/* Exception 5, continued — a site-local outlined "secondary" button
+ * variant; Lily's theme has no such modifier of its own. */
+.button-secondary {
+  background: transparent;
+  color: var(--accent);
+  border-color: var(--accent);
+}
+a.button-secondary,
+a.button-secondary:visited {
+  color: var(--accent);
+}
+a.button-secondary:hover {
+  background: var(--accent-tint);
+  color: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+/* Exception 6 (see file-header comment) — keep the copy-feedback status
+ * out of flow in this site's compact header icon-row, without silencing
+ * it for screen readers (aria-live announces mutations regardless of
+ * visibility here). */
+.share-picker-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 2rem 0 1rem;
+}
+h1 { font-size: 2.5rem; }
+h2 { font-size: 1.875rem; }
+h3 { font-size: 1.375rem; }
+h4 { font-size: 1.125rem; }
+
+p { margin: 0 0 1rem; }
+
+/* Every Lily component hook this site uses (skip-link, button/call-to-
+ * action, section-heading, information-callout, code-block, details,
+ * summary-list, separator, the three pickers) is now fully styled by
+ * whichever theme file is linked — see the file-header comment. The one
+ * compatibility rule below exists because this site's own content pages
+ * nest a real <pre><code> inside Lily's <CodeBlock> (`.code-block`)
+ * rather than passing plain text as its children — Lily's `.code-block`
+ * already sets its own background/color/font/padding directly on that
+ * div, so the nested <pre> just needs its default browser margin zeroed
+ * and to inherit rather than override those values. */
+.code-block > pre {
+  margin: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  white-space: inherit;
+}
+.code-block > pre > code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+}
+
+/* Inline `code` outside a .code-block (e.g. in prose) — not a Lily hook,
+ * just base typography for this site's own content. */
+.prose code, .page-header code, .information-callout code {
+  background: var(--accent-tint);
+  color: var(--accent-hover);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+/* ---------------------------------------------------------------- *
+ * Site layout (this site's own hooks — not Lily components)
+ * ---------------------------------------------------------------- */
+
+.site-header {
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: var(--shadow);
+}
+.site-header-inner {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.site-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: var(--text);
+  text-decoration: none;
+  font-family: var(--font-mono);
+}
+.site-brand:hover { color: var(--accent); }
+.site-brand-mark { width: 1.75rem; height: 1.75rem; }
+
+.site-nav {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+.site-nav a {
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 0.5rem 0.7rem;
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  transition: background 150ms;
+}
+.site-nav a:hover { background: var(--border-color); color: var(--text); }
+.site-nav a[aria-current="page"] {
+  color: var(--accent);
+  font-weight: 600;
+  background: var(--accent-tint);
+}
+
+.site-controls {
+  display: flex;
+  align-items: center;
+}
+
+/* Lily: PickerBar composes ThemePicker, LocalePicker, TextSizePicker, and
+ * SharePicker — each an icon button opening an absolutely-positioned
+ * listbox/menu, sharing one visual treatment; only the class-name prefix
+ * differs per component. PickerBar itself renders no CSS beyond its own
+ * `.picker-bar` root wrapper (see that package's index.md), so this site
+ * supplies the row layout the four pickers sit in. */
+.picker-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+/* The SharePicker's default icon glyph is replaced with a fixed-geometry
+ * inline SVG in +layout.svelte (font-fallback metrics for the default ➤
+ * glyph don't align the same across platforms — see that file's comment).
+ * The SVG carries its own size/display attributes directly, so it needs
+ * no rule here; Lily's theme CSS handles the button/list chrome for all
+ * four pickers. */
+
+.site-main {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+.prose { max-width: var(--prose-max); }
+.prose ul, .prose ol { padding-inline-start: 1.5rem; }
+.prose li { margin-bottom: 0.35rem; }
+
+.section { margin: 4rem 0; }
+.section:first-child { margin-top: 0; }
+
+.page-header { max-width: var(--prose-max); margin-bottom: 2rem; }
+.page-header h1 { margin-top: 0; }
+.page-header p { font-size: 1.125rem; color: var(--text-muted); }
+
+.repo-list {
+  list-style: none;
+  margin: 0 0 1.5rem;
+  padding: 0;
+}
+.repo-list li {
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+.repo-list li:last-child { border-bottom: none; }
+
+/* /about/'s full 46-repo matrix — a plain semantic <table>, not a Lily
+ * component, both because Lily ships no table component in this version
+ * of the headless package and because a real <table> is exactly the right
+ * element for genuinely tabular data (screen readers announce row/column
+ * headers for free with `scope`). .table-scroll lets it scroll
+ * horizontally on narrow screens instead of squeezing six columns into a
+ * phone width or breaking the page's own horizontal scroll. */
+.table-scroll {
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+.demo-matrix {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.demo-matrix th, .demo-matrix td {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border-color);
+  text-align: start;
+  white-space: nowrap;
+}
+.demo-matrix thead th {
+  background: var(--card-bg);
+  font-weight: 600;
+}
+.demo-matrix tbody th[scope="row"] {
+  font-weight: 600;
+  background: var(--card-bg);
+}
+.demo-matrix tbody tr:hover { background: var(--row-hover-bg); }
+.demo-matrix a { font-size: 0.85em; }
+.demo-matrix code { font-size: 0.85em; }
+
+.site-footer {
+  background: var(--card-bg);
+  border-top: 1px solid var(--border-color);
+  margin-top: 4rem;
+  padding: 2rem 1.5rem;
+}
+.site-footer-inner {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem 2rem;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+.site-footer p { margin: 0; }
+.site-footer-links { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+/* .summary-list / .summary-list-item override — see the file-header
+ * comment (point 4) for why this is needed. Two parts, both required:
+ * removing `display: contents` from the item alone isn't enough — with
+ * that gone, the parent `.summary-list`'s own 3-column grid (Lily's CSS)
+ * instead swallows each *item* as a single opaque cell, packing three
+ * items per visual row at 1/3 width each. So the parent must also drop
+ * to one column (each item a full-width row) as well as the item
+ * dropping `display: contents` for its own internal 2-column layout. */
+.summary-list {
+  display: block !important;
+}
+.summary-list-item {
+  display: grid !important;
+  grid-template-columns: minmax(9rem, 14rem) 1fr;
+  gap: 0.25rem 1.5rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+.summary-list-item dt { font-weight: 600; margin: 0; }
+.summary-list-item dd { margin: 0; }
+
+/* ---------------------------------------------------------------- *
+ * Fixture section (home page) — plain and legible on purpose.
+ *
+ * These elements exist to be found by CSS selectors and XPath from five
+ * sibling repos (see AGENTS.md, spec/index.md). Do not restyle them into
+ * anything that changes their ids, names, classes, or text; layout-only
+ * spacing here is fine.
+ * ---------------------------------------------------------------- */
+.site-fixtures {
+  max-width: var(--prose-max);
+  margin: 2rem auto 0;
+}
+.site-fixtures h2 {
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+.site-fixtures h2:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+.site-fixtures h3 { font-size: 1.1rem; margin-top: 1.5rem; }
+.site-fixtures p { margin: 0.35rem 0; }
+.site-fixtures ol,
+.site-fixtures ul {
+  margin: 0.5rem 0 1rem;
+  padding-inline-start: 1.5rem;
+}
+.site-fixtures form label {
+  display: inline-block;
+  min-width: 12rem;
+}
+.site-fixtures form div,
+.site-fixtures form p {
+  margin: 0.5rem 0;
+}
+.site-fixtures input[type="text"] {
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--card-bg);
+  color: var(--text);
+}
+.site-fixtures input[type="submit"] {
+  margin-top: 1rem;
+  padding: 0.5rem 1.25rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--card-bg);
+  color: var(--text);
+  cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  .site-nav { width: 100%; justify-content: flex-start; }
+  .site-main { padding: 2rem 1rem; }
+  .summary-list-item { grid-template-columns: 1fr; gap: 0.25rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Right-to-left locales (e.g. ar-001, <html dir="rtl">).
+ *
+ * Source code, inline code, and the home page's fixture section are
+ * always English / left-to-right, whatever the page's own direction:
+ * code and the fixture contract are never translated (see
+ * spec/locales/index.md). Done in CSS, not by adding a dir attribute,
+ * so the fixture markup stays byte-for-byte what the sibling repos
+ * expect. Everything else in this file uses logical properties
+ * (padding-inline-start, text-align: start) and mirrors automatically.
+ */
+.code-block > pre,
+.code-block > pre > code {
+  direction: ltr;
+  text-align: left;
+}
+.prose code, .page-header code, .information-callout code, .demo-matrix code {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+.site-fixtures {
+  direction: ltr;
+  text-align: left;
+}
