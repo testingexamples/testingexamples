@@ -1,0 +1,19 @@
+# Demo Playwright JavaScript for NHS Wales
+
+> A beginner-friendly Playwright + JavaScript/Node demo that drives a real
+> Chromium browser against the real, live NHS Wales website
+> (https://www.nhs.wales/) and runs three real assertion-based checks.
+
+## Docs
+
+- [README](README.md): Install and run instructions, and a summary of what the demo tests.
+- [Spec](spec/index.md): The exact three test scenarios, selector ids, and expected strings, as the single source of truth.
+- [Citation](CITATION.cff): Citation metadata for this software.
+
+## Source
+
+- [demo.js](src/demo.js): The Playwright script that implements the three tests described in the spec.
+
+## Optional
+
+- [NHS Wales](https://www.nhs.wales/): The live website this demo tests against.
