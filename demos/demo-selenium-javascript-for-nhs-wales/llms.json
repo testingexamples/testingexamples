@@ -1,0 +1,49 @@
+{
+  "name": "Demo Selenium JavaScript for NHS Wales",
+  "summary": "A beginner-friendly walkthrough of Selenium WebDriver browser automation in JavaScript, driving a real Chrome browser against the live production NHS Wales website.",
+  "description": "This repo demonstrates Selenium WebDriver browser automation testing with JavaScript and Node.js, using the real NHS Wales website (https://www.nhs.wales/) as a friendly real-world example. It drives a real Chrome browser and runs three real, assertion-based checks: the home page title, the About Us page title and headline, and the search results page content.",
+  "repository": "https://github.com/joelparkerhenderson/demo-selenium-javascript-for-nhs-wales/",
+  "license": "MIT OR Apache-2.0 OR GPL-2.0-only OR GPL-3.0-only OR BSD-3-Clause",
+  "sections": [
+    {
+      "title": "Docs",
+      "links": [
+        {
+          "title": "README",
+          "url": "./README.md",
+          "description": "Install, run, and troubleshooting instructions."
+        },
+        {
+          "title": "Spec",
+          "url": "./spec/index.md",
+          "description": "Single source of truth for the exact three test scenarios, selectors, and expected strings checked against nhs.wales."
+        },
+        {
+          "title": "Citation",
+          "url": "./CITATION.cff",
+          "description": "How to cite this software."
+        }
+      ]
+    },
+    {
+      "title": "Source",
+      "links": [
+        {
+          "title": "demo.js",
+          "url": "./src/demo.js",
+          "description": "The Selenium WebDriver demo script itself."
+        }
+      ]
+    },
+    {
+      "title": "Optional",
+      "links": [
+        {
+          "title": "AGENTS.md",
+          "url": "./AGENTS.md",
+          "description": "Instructions for AI coding agents working in this repo."
+        }
+      ]
+    }
+  ]
+}
