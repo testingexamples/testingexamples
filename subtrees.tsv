@@ -2,6 +2,8 @@ demos/demo-playwright-c-sharp	demo-playwright-c-sharp
 demos/demo-playwright-c-sharp-for-google-maps	demo-playwright-c-sharp-for-google-maps
 demos/demo-playwright-c-sharp-for-google-search	demo-playwright-c-sharp-for-google-search
 demos/demo-playwright-c-sharp-for-nhs-wales	demo-playwright-c-sharp-for-nhs-wales
+demos/demo-playwright-elixir	demo-playwright-elixir
+demos/demo-playwright-go	demo-playwright-go
 demos/demo-playwright-java	demo-playwright-java
 demos/demo-playwright-java-for-google-maps	demo-playwright-java-for-google-maps
 demos/demo-playwright-java-for-google-search	demo-playwright-java-for-google-search
@@ -10,6 +12,7 @@ demos/demo-playwright-javascript	demo-playwright-javascript
 demos/demo-playwright-javascript-for-google-maps	demo-playwright-javascript-for-google-maps
 demos/demo-playwright-javascript-for-google-search	demo-playwright-javascript-for-google-search
 demos/demo-playwright-javascript-for-nhs-wales	demo-playwright-javascript-for-nhs-wales
+demos/demo-playwright-kotlin	demo-playwright-kotlin
 demos/demo-playwright-python	demo-playwright-python
 demos/demo-playwright-python-for-google-maps	demo-playwright-python-for-google-maps
 demos/demo-playwright-python-for-google-search	demo-playwright-python-for-google-search
@@ -26,6 +29,8 @@ demos/demo-selenium-c-sharp	demo-selenium-c-sharp
 demos/demo-selenium-c-sharp-for-google-maps	demo-selenium-c-sharp-for-google-maps
 demos/demo-selenium-c-sharp-for-google-search	demo-selenium-c-sharp-for-google-search
 demos/demo-selenium-c-sharp-for-nhs-wales	demo-selenium-c-sharp-for-nhs-wales
+demos/demo-selenium-elixir	demo-selenium-elixir
+demos/demo-selenium-go	demo-selenium-go
 demos/demo-selenium-java	demo-selenium-java
 demos/demo-selenium-java-for-google-maps	demo-selenium-java-for-google-maps
 demos/demo-selenium-java-for-google-search	demo-selenium-java-for-google-search
@@ -34,6 +39,7 @@ demos/demo-selenium-javascript	demo-selenium-javascript
 demos/demo-selenium-javascript-for-google-maps	demo-selenium-javascript-for-google-maps
 demos/demo-selenium-javascript-for-google-search	demo-selenium-javascript-for-google-search
 demos/demo-selenium-javascript-for-nhs-wales	demo-selenium-javascript-for-nhs-wales
+demos/demo-selenium-kotlin	demo-selenium-kotlin
 demos/demo-selenium-python	demo-selenium-python
 demos/demo-selenium-python-for-google-maps	demo-selenium-python-for-google-maps
 demos/demo-selenium-python-for-google-search	demo-selenium-python-for-google-search
