@@ -6,9 +6,9 @@ Monorepo for the [testingexamples](https://github.com/testingexamples) projects.
 | --- | --- |
 | `sites/testingexamples.github.io` | The fixture website |
 | `demos/demo-*` | Selenium and Playwright demo projects |
-| `skills/*-skill` | Claude Code skills for each tool and language |
+| `skills/*-skill` | Claude Code skills for each tool and language (monorepo only, not published separately) |
 
-Each subdirectory is also published as its own standalone repository,
+Each directory under `sites/` and `demos/` is also published as its own standalone repository,
 `testingexamples/<name>`, on GitHub, GitLab, and Codeberg, using `git subtree`.
 
 ## Publishing
